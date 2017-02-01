@@ -57,7 +57,7 @@ class UserManager(models.Manager):
             if users_list:
                 user = users_list[0]
             else:
-                return (False, ["email or password didn't exist"])
+                return (False, ["Email or password doesn't exist"])
             password = post['password'].encode()
             passwordhashed = bcrypt.hashpw(password, bcrypt.gensalt())
             print passwordhashed
