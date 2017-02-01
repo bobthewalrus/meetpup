@@ -56,7 +56,7 @@ def registervalidate(request):
 def success(request):
     if not 'user' in request.session:
         return redirect('/')
-    request.session['zip']='23.231,-100.22'
+    request.session['zip']='37.386402,-121.925215'
     print request.session['zip']
     return render(request, 'login_registration/success.html')
 def zipupdate(request):
