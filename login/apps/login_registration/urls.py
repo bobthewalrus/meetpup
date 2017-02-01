@@ -7,5 +7,4 @@ urlpatterns = [
     url(r'^registervalidate$', registervalidate, name='registervalidate'),
     url(r'^success$', success, name='success'),
     url(r'^logout$', logout, name='logout'),
-    url(r'^community$', views.community),
 ]

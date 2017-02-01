@@ -57,9 +57,6 @@ def success(request):
         return redirect('/')
     return render(request, 'login_registration/success.html')
 
-def community(request):
-    return render(request, 'login_registration/community.html')
-
 def logout(request):
     request.session.clear()
     # request.session.pop('user')
