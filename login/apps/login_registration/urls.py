@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from views import index, loginvalidate, registervalidate, success, logout
+from views import index, loginvalidate, registervalidate, success, logout, register
 urlpatterns = [
     url(r'^$', index, name='index'),
     url(r'^loginvalidate$', loginvalidate, name='loginvalidate'),

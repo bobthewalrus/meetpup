@@ -48,7 +48,7 @@ def registervalidate(request):
 
     if not result[0]:
         print_messages(request, result[1])
-        return redirect('/')
+        return redirect('register')
 
     return login(request, result[1])
 
@@ -61,3 +61,6 @@ def logout(request):
     request.session.clear()
     # request.session.pop('user')
     return redirect('/')
+
+def register(request):
+    return render(request, 'login_registration/registration.html')
