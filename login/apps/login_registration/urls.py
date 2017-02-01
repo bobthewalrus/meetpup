@@ -5,5 +5,6 @@ urlpatterns = [
     url(r'^loginvalidate$', loginvalidate, name='loginvalidate'),
     url(r'^registervalidate$', registervalidate, name='registervalidate'),
     url(r'^success$', success, name='success'),
-    url(r'^logout$', logout, name='logout')
+    url(r'^logout$', logout, name='logout'),
+    url(r'^register$', register, name='register')
 ]
