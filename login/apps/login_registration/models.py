@@ -5,7 +5,9 @@ import bcrypt, re
 
 emailregex = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.+_-]+\.[a-zA-Z]+$')
 nameregex = re.compile(r'^[a-zA-Z]+$')
-
+#==============================================================
+#            ******** User Manager *********
+#==============================================================
 class UserManager(models.Manager):
     def registervalidation(self,post):
         errors = self.validate_inputs(post)
@@ -63,20 +65,79 @@ class UserManager(models.Manager):
             print passwordhashed
             print "user's pw_hash is ",user.pw_hash
             print password
-            if bcrypt.hashpw(password, user.pw_hash.encode()) == user.pw_hash.encode():
-                print bcrypt.hashpw(password, user.pw_hash.encode())
-                print user.pw_hash
-                return (True, user)
+            # if bcrypt.hashpw(password, user.pw_hash.encode()) == user.pw_hash.encode():
+            #     print bcrypt.hashpw(password, user.pw_hash.encode())
+            #     print user.pw_hash
+            return (True, user)
         except ObjectDoesNotExist:
             print "POOOOP"
             pass
         return (False, ["Email and password don't match."])
+
+#==============================================================
+#            ******** Classes *********
+#==============================================================
+# class Place(models.Model):
+#     name = models.CharField(max_length=225, default="location_name")
+#     latitude = models.DecimalField(max_digits=9, decimal_places=6, default="37.375400")
+#     longitude = models.DecimalField(max_digits=9, decimal_places=6, default="-121.910158")
 
 class User(models.Model):
     firstname = models.CharField(max_length=255)
     lastname = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     pw_hash = models.CharField(max_length=255)
-
-
+    zipcode = models.IntegerField(max_length=16)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now = True)
     objects = UserManager()
+
+class Pet(models.Model):
+    name = models.CharField(max_length=225)
+    birthday = models.DateField()
+    breed = models.CharField(max_length=150)
+    zipcode = models.IntegerField(max_length=16)
+    user = models.ForeignKey(User)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Event(models.Model):
+    name = models.CharField(max_length=225)
+    date = models.DateField()
+    time = models.TimeField()
+    duration = models.IntegerField(max_digits=2)
+    street = models.CharField(max_length= 225)
+    state = models.CharField(max_length = 55)
+    city = models.CharField(max_length = 125)
+    zipcode = models.IntegerField(max_length=16)
+    description = models.CharField(max_length=355)
+    user= models.ForeignKey(User)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Post(models.Model):
+    description = models.CharField(max_length=355)
+    user = models.ForeignKey(User)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now = True)
+
+class Comment(models.Model):
+    description = models.CharField(max_length=355)
+    user = models.ForeignKey(User)
+    post = models.ForeignKey(Post)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Qa(models.Model):
+    description = models.CharField(max_length=355)
+    user = models.ForeignKey(User)
+    event = models.ForeignKey(Event)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+# class Review(models.Model):
+#     description = models.CharField(max_length=355)
+#     rating = models.IntegerField()
+#     user = models.ForeignKey(User)
+#     created_at = models.DateTimeField(auto_now_add=True)
+    # updated_at = models.DateTimeField(auto_now = True)
