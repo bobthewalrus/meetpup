@@ -14,7 +14,7 @@
         </ul>
         {% endif %}
 
-    <h1>Register</h1>
+    <!-- <h1>Register</h1>
     <form action='/registervalidate' method='POST'>
         {% csrf_token %}
         <label for= 'firstname'>First Name:<input type="text" name='firstname' id='firstname'></label>
@@ -23,7 +23,7 @@
         <label for ='password'>Password: <input type='password' name='password' id='password'></label>
         <label for = 'passwordconf'>Password Confirmation: <input type='password' name='passwordconf' id='passwordconf'></label>
         <input type='submit' value='Register'>
-    </form>
+    </form> -->
     <h1>Login</h1>
     <form action='/loginvalidate' method='POST'>
         {% csrf_token %}
@@ -32,6 +32,14 @@
         <input type='submit' value='Login'>
     </form>
 
+    <h3>Not a user?</h3>
+    <form action="/register" method="post">
+      {% csrf_token %}
+      <input type="submit" value="Register">
+    </form>
 
+    <a href='{% url 'community' %}'>Community</a><br>
+    <a href='{% url 'adoption' %}'>Adoption</a>
+    <h1></h1>
   </body>
 </html>
