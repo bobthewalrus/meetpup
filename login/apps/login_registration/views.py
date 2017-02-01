@@ -48,19 +48,16 @@ def registervalidate(request):
 
     if not result[0]:
         print_messages(request, result[1])
-        return redirect('/')
+        return redirect('register')
 
     return login(request, result[1])
+
 
 def success(request):
     if not 'user' in request.session:
         return redirect('/')
-    if not 'zip' in request.session:
-        request.session.zip='95008'
-    else:
-        request.session.zip=request.POST['zip']
-        print request.session.zip
-
+    request.session['zip']='23.231,-100.22'
+    print request.session['zip']
     return render(request, 'login_registration/success.html')
 def zipupdate(request):
     return redirect('success')
@@ -69,3 +66,12 @@ def logout(request):
     request.session.clear()
     # request.session.pop('user')
     return redirect('/')
+
+def register(request):
+    return render(request, 'login_registration/registration.html')
+
+def community(request):
+    return render(request, 'login_registration/community.html')
+
+def adoption(request):
+    return render(request, 'login_registration/adoption.html')
