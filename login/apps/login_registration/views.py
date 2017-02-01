@@ -64,3 +64,9 @@ def logout(request):
 
 def register(request):
     return render(request, 'login_registration/registration.html')
+
+def community(request):
+    return render(request, 'login_registration/community.html')
+
+def adoption(request):
+    return render(request, 'login_registration/adoption.html')
