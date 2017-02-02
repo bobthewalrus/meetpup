@@ -97,6 +97,7 @@ class User(models.Model):
 class Pet(models.Model):
     name = models.CharField(max_length=225)
     birthday = models.DateField()
+    biography = models.TextField()
     breed = models.CharField(max_length=150)
     zipcode = models.IntegerField()
     user = models.ForeignKey(User)
