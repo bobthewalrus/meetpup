@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from views import index, loginvalidate, registervalidate, success, logout, zipupdate, register, community, adoption, editprofile, updateprofile, profilepage
+from views import index, loginvalidate, registervalidate, success, logout, zipupdate, register, community, adoption, editprofile, updateprofile, profilepage, addpet
 from . import views
 urlpatterns = [
     url(r'^$', index, name='index'),
@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'^zipupdate$', zipupdate, name='zipupdate'),
     url(r'^editprofile$', editprofile, name='editprofile'),
     url(r'^updateprofile$', updateprofile, name='updateprofile'),
-    url(r'^profilepage$', profilepage, name='profilepage')
+    url(r'^profilepage$', profilepage, name='profilepage'),
+    url(r'^addpet$', addpet, name='addpet')
 ]

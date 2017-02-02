@@ -2866,8 +2866,9 @@ ul.staggered-list li {
 }
 
 footer.page-footer {
+  margin-top:20px;
   padding-top: 20px;
-  background-color: #ee6e73;
+  background-color: #004C63;
 }
 
 footer.page-footer .footer-copyright {
@@ -2881,7 +2882,9 @@ footer.page-footer .footer-copyright {
           align-items: center;
   padding: 10px 0px;
   color: rgba(255, 255, 255, 0.8);
-  background-color: rgba(51, 51, 51, 0.08);
+  background-color: rgba(51, 51, 51, 0.5);
+  /*background-color: #014554;*/
+  /*background-color: black;*/
 }
 
 table, th, td {
@@ -4004,10 +4007,10 @@ nav ul a span.badge {
 
 nav {
   color: #fff;
-  background-color: #ee6e73;
+  background-color: #004C63;
   width: 100%;
-  height: 56px;
-  line-height: 56px;
+  height: 80px !important;
+  line-height: 80px !important;
 }
 
 nav.nav-extended {

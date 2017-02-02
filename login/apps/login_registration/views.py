@@ -84,7 +84,10 @@ def profilepage(request):
     return render(request, 'login_registration/profile.html', context)
 
 def editprofile(request):
-    return render(request, 'login_registration/edit.html')
+    context = {
+        'user': User.objects.get(id=request.session['user']['id'])
+    }
+    return render(request, 'login_registration/edit.html', context)
 
 def updateprofile(request):
     user = User.objects.filter(id=request.session['user']['id'])[0]
@@ -93,9 +96,6 @@ def updateprofile(request):
     user_lastname = request.POST['last_name']
     user_email = request.POST['email']
     user_bio = request.POST['bio']
-    pet_name = request.POST['pet_name']
-    pet_bd = request.POST['pet_birthday']
-    pet_breed = request.POST['pet_breed']
 
     if not len(user_firstname) < 1:
         user.firstname = user_firstname
@@ -122,4 +122,22 @@ def updateprofile(request):
     print user.firstname
     print user.email
     print request.session['user']
+
+    return redirect('/profilepage')
+
+def addpet(request):
+    user = User.objects.filter(id=request.session['user']['id'])[0]
+    pet_name = request.POST['pet_name']
+    pet_bd = request.POST['pet_birthday']
+    pet_breed = request.POST['pet_breed']
+    valid = True
+
+    if len(pet_name) <1:
+        valid = False
+
+    if len(pet_bd) <1:
+        valid = False
+
+    if valid:
+        Pet.objects.create(name=pet_name, birthday = pet_bd, breed=pet_breed)
     return redirect('/profilepage')
