@@ -118,7 +118,9 @@ def comment(request, post_id):
         user_id = request.session['user']['id']
         user = User.objects.filter(id=user_id)[0]
         description = request.POST['description']
+        if not description:
+
         post = Post.objects.filter(id=post_id)[0]
         post_id= post.id
         new_comment = Comment.objects.create(user=user, post=post, description=description)
-    return redirect('/topic/{}'.format(post_id))
+    return redirect('/topic/{}'.format(post_id), {"alert:r."})

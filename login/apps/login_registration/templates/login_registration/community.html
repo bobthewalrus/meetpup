@@ -7,6 +7,9 @@
     <body>
         <h3>Community Board </h3>
 
+        <a href="/logout">Logout</a><br>
+        <a href="/success">Back</a><br>
+
         {% for post in posts %}
             <a href="/topic/{{post.id}}"> {{post.title}}</a> Posted by <a href="#">{{post.user.firstname}}</a><br>
         {% endfor %}
@@ -17,6 +20,9 @@
             <textarea name="description" rows="8" cols="80" placeholder="description"></textarea><br>
             <input type="submit" name="post" value="Post">
         </form>
+
+
+
 
 
 
