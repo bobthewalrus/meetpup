@@ -6,10 +6,18 @@ import bcrypt, re
 emailregex = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.+_-]+\.[a-zA-Z]+$')
 nameregex = re.compile(r'^[a-zA-Z]+$')
 #==============================================================
+#            ******** Event Manager *********
+#==============================================================
+class EventManager(models.Manager):
+    def eventcreator(self, request):
+        users_list = User.objects.filter(id=request.session['user']['id'])
+        event = self.create(name=request.POST['name'], date=request.POST['date'], time=request.POST['time'], duration=request.POST['duration'], street=request.POST['street'], state=request.POST['state'], city=request.POST['city'], zipcode=request.POST['zipcode'], description=request.POST['description'], user=users_list[0])
+        return ()
+#==============================================================
 #            ******** User Manager *********
 #==============================================================
 class UserManager(models.Manager):
-    def registervalidation(self,post):
+    def registervalidation(self,post, request):
         errors = self.validate_inputs(post)
 
         if len(errors) >0:
@@ -105,7 +113,7 @@ class Event(models.Model):
     name = models.CharField(max_length=225)
     date = models.DateField()
     time = models.TimeField()
-    duration = models.IntegerField()
+    duration = models.CharField(max_length=255)
     street = models.CharField(max_length= 225)
     state = models.CharField(max_length = 55)
     city = models.CharField(max_length = 125)
@@ -114,6 +122,7 @@ class Event(models.Model):
     user= models.ForeignKey(User)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    objects = EventManager()
 
 class Post(models.Model):
     description = models.CharField(max_length=355)

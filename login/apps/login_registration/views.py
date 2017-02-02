@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
-from models import User
+from models import User, Event
 from django.contrib import messages
 from django.urls import reverse
 
@@ -40,6 +40,7 @@ def login(request, user):
     'firstname' : user.firstname,
     'lastname' : user.lastname,
     'email' : user.email,
+    'zip':user.zipcode,
     }
     return redirect('success')
 
@@ -66,6 +67,9 @@ def eventform(request):
 
     return render(request,'login_registration/eventform.html')
 def createevent(request):
+    user=request.session['user']['id']
+    print user
+    result= Event.objects.eventcreator(request)
 
     return redirect('community')
 
