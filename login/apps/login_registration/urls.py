@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^editprofile$', editprofile, name='editprofile'),
     url(r'^updateprofile$', updateprofile, name='updateprofile'),
     url(r'^profilepage$', profilepage, name='profilepage'),
-    url(r'^addpet$', addpet, name='addpet')
+    url(r'^addpet$', addpet, name='addpet'),
     url(r'^zipupdate$', zipupdate, name='zipupdate'),
     url(r'^post$', views.post),
     url(r'^forumtopic$', views.forumtopic),
