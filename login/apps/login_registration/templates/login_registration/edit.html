@@ -6,11 +6,27 @@
   </head>
   <body>
     <h1>Edit your Profile</h1>
-    <form action="/update" method="post">
+    <form action="/updateprofile" method="post">
+      {% csrf_token %}
       <h4>Profile Picture</h4>
-      <h4>Biography</h4>
+      <label for="email">Email:</label><br>
+      <input type="text" name="email"><br>
+      <label for="first_name">First Name:</label><br>
+      <input type="text" name="first_name"><br>
+      <label for="last_name">Last Name:</label><br>
+      <input type="text" name="last_name"><br>
+      <label for="bio">Biography:</label><br>
       <textarea name="bio" rows="8" cols="80"></textarea>
       <h4>Add a Family Member!</h4>
+      <!-- <label for="pet_name">Name:</label> -->
+      <input type="text" name="pet_name" placeholder="Name"><br>
+      <!-- <label for="pet_birthday">Birthday:</label> -->
+      <input type="text" name="pet_birthday" placeholder="Birthday"><br>
+      <!-- <label for="pet_breed">Breed:</label> -->
+      <input type="text" name="pet_breed" placeholder="Breed"><br>
+      <label for="pet_bio">About:</label><br>
+      <textarea name="pet_bio" rows="8" cols="80"></textarea><br>
+      <input type="submit" value="Update">
     </form>
 
     <form action="/profilepage" method="post">

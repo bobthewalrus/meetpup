@@ -40,6 +40,7 @@ def login(request, user):
     'firstname' : user.firstname,
     'lastname' : user.lastname,
     'email' : user.email,
+    'biography' :user.biography
     }
     return redirect('success')
 
@@ -77,10 +78,29 @@ def adoption(request):
     return render(request, 'login_registration/adoption.html')
 
 def profilepage(request):
-    return render(request, 'login_registration/profile.html')
-    
+    context = {
+        'user': User.objects.get(id=request.session['user']['id'])
+    }
+    return render(request, 'login_registration/profile.html', context)
+
 def editprofile(request):
     return render(request, 'login_registration/edit.html')
 
 def updateprofile(request):
-    return redirect('/')
+    user = User.objects.filter(id=request.session['user']['id'])[0]
+    print user.firstname
+    user_firstname = request.POST['first_name']
+    user_lastname = request.POST['last_name']
+    user_email = request.POST['email']
+    user_bio = request.POST['bio']
+    pet_name = request.POST['pet_name']
+    pet_bd = request.POST['pet_birthday']
+    pet_breed = request.POST['pet_breed']
+
+    user.firstname = user_name
+    request.session['user']['firstname'] = user_firstname
+    user.save()
+
+    print user.firstname
+    print request.session['user']
+    return redirect('/profilepage')

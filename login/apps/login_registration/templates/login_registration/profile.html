@@ -7,8 +7,9 @@
   <body>
     <h1>I SHOW PICTURES AND STUFF</h1>
     <p>Testing and stuff for profiles</p>
-    <h1>Success!</h1>
-    <p> Welcome {{request.session.user.firstname|title}}! You're logged in!</p>
+    <p>Welcome {{ user.firstname|title }}!</p>
+    <h3>About</h3>
+    <p>{{ request.session.user.biography }}</p>
     <a href='{% url 'logout' %}'>Logout</a>
     <form action="/editprofile" method="post">
       {% csrf_token %}
