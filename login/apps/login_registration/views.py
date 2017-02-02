@@ -127,8 +127,8 @@ def updateprofile(request):
 
 def addpet(request):
     user = User.objects.filter(id=request.session['user']['id'])[0]
-    pet_name = request.POST['pet_name']
     pet_bd = request.POST['pet_birthday']
+    pet_name = request.POST['pet_name']
     pet_breed = request.POST['pet_breed']
     valid = True
 
@@ -140,4 +140,6 @@ def addpet(request):
 
     if valid:
         Pet.objects.create(name=pet_name, birthday = pet_bd, breed=pet_breed)
-    return redirect('/profilepage')
+        return redirect('/profilepage')
+    else:
+        return redirect('/addpet')
