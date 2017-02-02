@@ -3,12 +3,19 @@
   <head>
     <meta charset="utf-8">
     <title>Profile</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'login_registration/css/style.css' %}"media="screen" title="no title"  charset="utf-8">
   </head>
   <body>
     <h1>I SHOW PICTURES AND STUFF</h1>
     <p>Testing and stuff for profiles</p>
-    <h1>Success!</h1>
-    <p> Welcome {{request.session.user.firstname}}! You're logged in!</p>
+    <p>Welcome {{ user.firstname|title }} {{user.lastname|make_list|first}}. !</p>
+    <h3>About</h3>
+    <p>{{ user.biography }}</p>
     <a href='{% url 'logout' %}'>Logout</a>
+    <form action="/editprofile" method="post">
+      {% csrf_token %}
+      <input type="submit" value="Edit Profile">
+    </form>
   </body>
 </html>
