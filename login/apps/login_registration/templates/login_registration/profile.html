@@ -9,7 +9,7 @@
   <body>
     <h1>I SHOW PICTURES AND STUFF</h1>
     <p>Testing and stuff for profiles</p>
-    <p>Welcome {{ user.firstname|title }}!</p>
+    <p>Welcome {{ user.firstname|title }} {{user.lastname|make_list|first}}. !</p>
     <h3>About</h3>
     <p>{{ user.biography }}</p>
     <a href='{% url 'logout' %}'>Logout</a>
