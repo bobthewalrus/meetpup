@@ -75,3 +75,12 @@ def community(request):
 
 def adoption(request):
     return render(request, 'login_registration/adoption.html')
+
+def profilepage(request):
+    return render(request, 'login_registration/profile.html')
+    
+def editprofile(request):
+    return render(request, 'login_registration/edit.html')
+
+def updateprofile(request):
+    return redirect('/')

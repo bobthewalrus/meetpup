@@ -88,6 +88,8 @@ class User(models.Model):
     email = models.CharField(max_length=255)
     pw_hash = models.CharField(max_length=255)
     zipcode = models.IntegerField()
+    biography = models.TextField(null=True)
+    image = models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now = True)
     objects = UserManager()
@@ -134,6 +136,7 @@ class Qa(models.Model):
     event = models.ForeignKey(Event)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
 
 # class Review(models.Model):
 #     description = models.CharField(max_length=355)

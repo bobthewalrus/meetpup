@@ -29,6 +29,11 @@
         <input type="submit" name="submit" value="submit">
     </form>
 >>>>>>> sam
+    <h1>Head to Profile Page</h1>
+    <form action="/profilepage" method="post">
+      {% csrf_token %}
+      <input type="submit" value="Go!">
+    </form>
     <h1>Login</h1>
     <form action='/loginvalidate' method='POST'>
         {% csrf_token %}
