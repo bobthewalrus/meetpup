@@ -4044,6 +4044,7 @@ nav .nav-wrapper {
   position: relative;
   height: 100%;
   margin-left: 20px;
+  padding-right: 20px;
 }
 
 @media only screen and (min-width: 993px) {

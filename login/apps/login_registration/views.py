@@ -130,13 +130,13 @@ def comment(request, post_id):
 
 def profilepage(request):
     context = {
-        'user': User.objects.get(id=request.session['user']['id'])
+        'user': User.objects.filter(id=request.session['user']['id'])[0]
     }
     return render(request, 'login_registration/profile.html', context)
 
 def editprofile(request):
     context = {
-        'user': User.objects.get(id=request.session['user']['id'])
+        'user': User.objects.filter(id=request.session['user']['id'])[0]
     }
     return render(request, 'login_registration/edit.html', context)
 
@@ -190,7 +190,7 @@ def addpet(request):
         valid = False
 
     if valid:
-        Pet.objects.create(name=pet_name, birthday = pet_bd, breed=pet_breed)
+        Pet.objects.create(name=pet_name, birthday = pet_bd, breed=pet_breed, user=user)
         return redirect('/profilepage')
     else:
-        return redirect('/addpet')
+        return redirect('/profilepage')
