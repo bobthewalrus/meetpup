@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>community</title>
+    </head>
+    <body>
+        <h3>Community Board </h3>
+
+        {% for post in posts %}
+            <a href="/topic/{{post.id}}"> {{post.title}}</a> Posted by <a href="#">{{post.user.firstname}}</a><br>
+        {% endfor %}
+
+        <form class="" action="/post" method="post">
+            <input type="text" name="title" placeholder="Title"><br>
+            {% csrf_token %}
+            <textarea name="description" rows="8" cols="80" placeholder="description"></textarea><br>
+            <input type="submit" name="post" value="Post">
+        </form>
+
+
+
+    </body>
+</html>
