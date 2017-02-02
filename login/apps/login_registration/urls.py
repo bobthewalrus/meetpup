@@ -12,5 +12,10 @@ urlpatterns = [
     url(r'^eventform$', eventform, name='eventform'),
     url(r'^createevent$', createevent, name='createevent'),
     url(r'^logout$', logout, name='logout'),
-    url(r'^zipupdate$', zipupdate, name='zipupdate')
+    url(r'^zipupdate$', zipupdate, name='zipupdate'),
+    url(r'^post$', views.post),
+    url(r'^forumtopic$', views.forumtopic),
+    url(r'^topic/(?P<post_id>\d+)$', views.topic),
+    url(r'^comment/(?P<post_id>\d+)$', views.comment),
+
 ]
