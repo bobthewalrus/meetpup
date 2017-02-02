@@ -17,11 +17,12 @@ urlpatterns = [
     url(r'^editprofile$', editprofile, name='editprofile'),
     url(r'^updateprofile$', updateprofile, name='updateprofile'),
     url(r'^profilepage$', profilepage, name='profilepage'),
-    url(r'^addpet$', addpet, name='addpet')
-    url(r'^zipupdate$', zipupdate, name='zipupdate'),
+    url(r'^addpet$', addpet, name='addpet'),
     url(r'^post$', views.post),
     url(r'^forumtopic$', views.forumtopic),
     url(r'^topic/(?P<post_id>\d+)$', views.topic),
     url(r'^comment/(?P<post_id>\d+)$', views.comment),
+    url(r'^deletecomment/(?P<post_id>\d+)/(?P<comment_id>\d+)$', views.deletecomment),
+
 
 ]

@@ -65,7 +65,9 @@ class UserManager(models.Manager):
         print '**********validating login******'
         try:
             users_list = User.objects.filter(email=post['email'])
+
             if users_list:
+
                 user = users_list[0]
             else:
                 return (False, ["Email or password doesn't exist"])

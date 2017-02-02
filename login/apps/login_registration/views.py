@@ -3,6 +3,7 @@ from models import User, Pet, Event, Post, Comment, Qa
 from django.contrib import messages
 from django.urls import reverse
 
+
 # Create your views here.
 
 
@@ -90,11 +91,6 @@ def community(request):
     return render(request, 'login_registration/community.html', context)
 
 def forumtopic(request):
-    # posts = Post.objects.all()
-    # context ={
-    # 'posts':posts
-    # }
-
     return render(request, 'login_registration/forumtopic.html')
 
 def adoption(request):
@@ -106,6 +102,12 @@ def post(request):
             user = User.objects.filter(id=user_id)[0]
             title = request.POST['title']
             description = request.POST['description']
+            if not title or not description:
+                messages.add_message(request, messages.INFO, "** Please provide title and description**")
+                return redirect('/community')
+
+            # if not description:
+            #     messages.add_message(request, messages.INFO, "** description can not be empty**")
             new_post = Post.objects.create(description=description, user=user, title=title)
     return redirect('/community')
 
@@ -124,11 +126,17 @@ def comment(request, post_id):
         user = User.objects.filter(id=user_id)[0]
         description = request.POST['description']
         if not description:
-
+            messages.add_message(request, messages.INFO, "** Comment can not be empty**")
+            return redirect('/topic/{}'.format(post_id))
         post = Post.objects.filter(id=post_id)[0]
         post_id= post.id
         new_comment = Comment.objects.create(user=user, post=post, description=description)
-    return redirect('/topic/{}'.format(post_id), {"alert:r."})
+    return redirect('/topic/{}'.format(post_id))
+
+#===========  deleting comments ==================
+def deletecomment(request, post_id, comment_id):
+    Comment.objects.filter(id=comment_id).delete()
+    return redirect('/topic/{}'.format(post_id))
 
 def profilepage(request):
     context = {
