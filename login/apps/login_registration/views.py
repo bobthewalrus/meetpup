@@ -40,7 +40,7 @@ def login(request, user):
     'firstname' : user.firstname,
     'lastname' : user.lastname,
     'email' : user.email,
-    'biography' :user.biography
+    'biography' : user.biography
     }
     return redirect('success')
 
@@ -97,10 +97,29 @@ def updateprofile(request):
     pet_bd = request.POST['pet_birthday']
     pet_breed = request.POST['pet_breed']
 
-    user.firstname = user_name
-    request.session['user']['firstname'] = user_firstname
-    user.save()
+    if not len(user_firstname) < 1:
+        user.firstname = user_firstname
+        print user.firstname
+        request.session['user']['firstname'] = user_firstname
+        user.save()
+
+    if not len(user_lastname) < 1:
+        user.lastname = user_lastname
+        request.session['user']['lastname'] = user_lastname
+        user.save()
+
+    if not len(user_email) < 1:
+        user.email = user_email
+        request.session['user']['email'] = user_email
+        user.save()
+
+    if not len(user_bio) < 1:
+        user.biography = user_bio
+        print user.biography
+        request.session['user']['biography'] = user_bio
+        user.save()
 
     print user.firstname
+    print user.email
     print request.session['user']
     return redirect('/profilepage')
