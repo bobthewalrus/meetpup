@@ -74,6 +74,23 @@
         Zip Code: <input type='text' name='zip'>
         <input type='submit' value='Submit'>
     </form>
+    <form action='/eventform'>
+        {% csrf_token %}
+        <input type='submit' value='Create Event'>
+    </form>
+    <form action='/logout'>
+        {% csrf_token %}
+        <input type='submit' value='Logout'>
+    </form>
+    <form action='/register'>
+        {% csrf_token %}
+        <input type='submit' value='Register'>
+    </form>
+    <form action='/community'>
+        {% csrf_token %}
+        <input type='submit' value='Community Page'>
+    </form>
+
     <div id="map"></div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4&libraries=places&callback=initialize" async defer></script>
   </body>

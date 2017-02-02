@@ -62,6 +62,13 @@ def success(request):
 def zipupdate(request):
     return redirect('success')
 
+def eventform(request):
+
+    return render(request,'login_registration/eventform.html')
+def createevent(request):
+
+    return redirect('community')
+
 def logout(request):
     request.session.clear()
     # request.session.pop('user')
