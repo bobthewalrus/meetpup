@@ -40,12 +40,12 @@ def login(request, user):
     'firstname' : user.firstname,
     'lastname' : user.lastname,
     'email' : user.email,
-    'zip':user.zipcode,
+    'zipcode':user.zipcode,
     }
     return redirect('success')
 
 def registervalidate(request):
-    result= User.objects.registervalidation(request.POST)
+    result= User.objects.registervalidation(request)
 
     if not result[0]:
         print_messages(request, result[1])
