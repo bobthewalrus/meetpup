@@ -1,5 +1,6 @@
 from django.conf.urls import url
-from views import index, loginvalidate, registervalidate, success, logout, zipupdate, register, community, adoption, eventform, createevent
+from views import index, loginvalidate, registervalidate, success, logout, zipupdate, register, community, adoption, editprofile, updateprofile, profilepage, addpet, eventform, createevent
+
 from . import views
 urlpatterns = [
     url(r'^$', index, name='index'),
@@ -12,6 +13,11 @@ urlpatterns = [
     url(r'^eventform$', eventform, name='eventform'),
     url(r'^createevent$', createevent, name='createevent'),
     url(r'^logout$', logout, name='logout'),
+    url(r'^zipupdate$', zipupdate, name='zipupdate'),
+    url(r'^editprofile$', editprofile, name='editprofile'),
+    url(r'^updateprofile$', updateprofile, name='updateprofile'),
+    url(r'^profilepage$', profilepage, name='profilepage'),
+    url(r'^addpet$', addpet, name='addpet')
     url(r'^zipupdate$', zipupdate, name='zipupdate'),
     url(r'^post$', views.post),
     url(r'^forumtopic$', views.forumtopic),

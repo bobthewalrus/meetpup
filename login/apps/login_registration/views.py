@@ -40,6 +40,7 @@ def login(request, user):
     'firstname' : user.firstname,
     'lastname' : user.lastname,
     'email' : user.email,
+    'biography' : user.biography
     }
     return redirect('success')
 
@@ -124,3 +125,70 @@ def comment(request, post_id):
         post_id= post.id
         new_comment = Comment.objects.create(user=user, post=post, description=description)
     return redirect('/topic/{}'.format(post_id), {"alert:r."})
+
+def profilepage(request):
+    context = {
+        'user': User.objects.get(id=request.session['user']['id'])
+    }
+    return render(request, 'login_registration/profile.html', context)
+
+def editprofile(request):
+    context = {
+        'user': User.objects.get(id=request.session['user']['id'])
+    }
+    return render(request, 'login_registration/edit.html', context)
+
+def updateprofile(request):
+    user = User.objects.filter(id=request.session['user']['id'])[0]
+    print user.firstname
+    user_firstname = request.POST['first_name']
+    user_lastname = request.POST['last_name']
+    user_email = request.POST['email']
+    user_bio = request.POST['bio']
+
+    if not len(user_firstname) < 1:
+        user.firstname = user_firstname
+        print user.firstname
+        request.session['user']['firstname'] = user_firstname
+        user.save()
+
+    if not len(user_lastname) < 1:
+        user.lastname = user_lastname
+        request.session['user']['lastname'] = user_lastname
+        user.save()
+
+    if not len(user_email) < 1:
+        user.email = user_email
+        request.session['user']['email'] = user_email
+        user.save()
+
+    if not len(user_bio) < 1:
+        user.biography = user_bio
+        print user.biography
+        request.session['user']['biography'] = user_bio
+        user.save()
+
+    print user.firstname
+    print user.email
+    print request.session['user']
+
+    return redirect('/profilepage')
+
+def addpet(request):
+    user = User.objects.filter(id=request.session['user']['id'])[0]
+    pet_bd = request.POST['pet_birthday']
+    pet_name = request.POST['pet_name']
+    pet_breed = request.POST['pet_breed']
+    valid = True
+
+    if len(pet_name) <1:
+        valid = False
+
+    if len(pet_bd) <1:
+        valid = False
+
+    if valid:
+        Pet.objects.create(name=pet_name, birthday = pet_bd, breed=pet_breed)
+        return redirect('/profilepage')
+    else:
+        return redirect('/addpet')
