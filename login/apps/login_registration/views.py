@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
-from models import User
+from models import User, Pet, Event, Post, Comment, Qa
 from django.contrib import messages
 from django.urls import reverse
 
@@ -78,7 +78,47 @@ def register(request):
     return render(request, 'login_registration/registration.html')
 
 def community(request):
-    return render(request, 'login_registration/community.html')
+    posts = Post.objects.all()
+    context ={
+    'posts':posts
+    }
+    return render(request, 'login_registration/community.html', context)
+
+def forumtopic(request):
+    # posts = Post.objects.all()
+    # context ={
+    # 'posts':posts
+    # }
+
+    return render(request, 'login_registration/forumtopic.html')
 
 def adoption(request):
     return render(request, 'login_registration/adoption.html')
+
+def post(request):
+    if request.method =="POST":
+            user_id = request.session['user']['id']
+            user = User.objects.filter(id=user_id)[0]
+            title = request.POST['title']
+            description = request.POST['description']
+            new_post = Post.objects.create(description=description, user=user, title=title)
+    return redirect('/community')
+
+def topic(request, post_id):
+    post = Post.objects.filter(id=post_id)[0]
+    comments = Comment.objects.filter(post = post)
+    context={
+        'post':post,
+        'comments':comments,
+    }
+    return render(request, 'login_registration/forumtopic.html', context)
+
+def comment(request, post_id):
+    if request.method == "POST":
+        user_id = request.session['user']['id']
+        user = User.objects.filter(id=user_id)[0]
+        description = request.POST['description']
+        post = Post.objects.filter(id=post_id)[0]
+        post_id= post.id
+        new_comment = Comment.objects.create(user=user, post=post, description=description)
+    return redirect('/topic/{}'.format(post_id))

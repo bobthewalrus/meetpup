@@ -87,9 +87,9 @@ class User(models.Model):
     lastname = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     pw_hash = models.CharField(max_length=255)
-    zipcode = models.IntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now = True)
+    # zipcode = models.IntegerField()
+    # created_at = models.DateTimeField(auto_now_add=True)
+    # updated_at = models.DateTimeField(auto_now = True)
     objects = UserManager()
 
 class Pet(models.Model):
@@ -116,6 +116,7 @@ class Event(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class Post(models.Model):
+    title = models.CharField(max_length=125, default="Prior to adding title column")
     description = models.CharField(max_length=355)
     user = models.ForeignKey(User)
     created_at = models.DateTimeField(auto_now_add=True)
