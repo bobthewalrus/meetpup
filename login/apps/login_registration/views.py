@@ -40,12 +40,13 @@ def login(request, user):
     'firstname' : user.firstname,
     'lastname' : user.lastname,
     'email' : user.email,
+    'zipcode':user.zipcode,
     'biography' : user.biography
     }
     return redirect('success')
 
 def registervalidate(request):
-    result= User.objects.registervalidation(request.POST)
+    result= User.objects.registervalidation(request)
 
     if not result[0]:
         print_messages(request, result[1])
@@ -67,6 +68,9 @@ def eventform(request):
 
     return render(request,'login_registration/eventform.html')
 def createevent(request):
+    user=request.session['user']['id']
+    print user
+    result= Event.objects.eventcreator(request)
 
     return redirect('community')
 
