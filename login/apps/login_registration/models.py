@@ -87,14 +87,17 @@ class User(models.Model):
     lastname = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     pw_hash = models.CharField(max_length=255)
-    # zipcode = models.IntegerField()
-    # created_at = models.DateTimeField(auto_now_add=True)
-    # updated_at = models.DateTimeField(auto_now = True)
+    zipcode = models.IntegerField()
+    biography = models.TextField(null=True)
+    image = models.CharField(max_length=255, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now = True)
     objects = UserManager()
 
 class Pet(models.Model):
     name = models.CharField(max_length=225)
     birthday = models.DateField()
+    biography = models.TextField(null=True)
     breed = models.CharField(max_length=150)
     zipcode = models.IntegerField()
     user = models.ForeignKey(User)
@@ -135,6 +138,7 @@ class Qa(models.Model):
     event = models.ForeignKey(Event)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
 
 # class Review(models.Model):
 #     description = models.CharField(max_length=355)
