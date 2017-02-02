@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from models import User, Pet, Event, Post, Comment, Qa
 from django.contrib import messages
 from django.urls import reverse
+from geopy.geocoders import Nominatim
 
 
 # Create your views here.
@@ -19,7 +20,7 @@ def loginvalidate(request):
     if request.method == "POST":
         print 'here'
         print request.POST['email']
-        result = User.objects.loginvalidation(request.POST)
+        result = User.objects.loginvalidation(request)
         print "Login validation complete"
         # print result
 
@@ -41,9 +42,10 @@ def login(request, user):
     'firstname' : user.firstname,
     'lastname' : user.lastname,
     'email' : user.email,
-    'zipcode':user.zipcode,
+    'zipcode': user.zipcode,
     'biography' : user.biography
     }
+    print request.session['user']['zipcode']
     return redirect('success')
 
 def registervalidate(request):
@@ -59,8 +61,13 @@ def registervalidate(request):
 def success(request):
     if not 'user' in request.session:
         return redirect('/')
-    request.session['zip']='37.386402,-121.925215'
-    print request.session['zip']
+    geolocator = Nominatim()
+    location = geolocator.geocode(request.session['user']['zipcode'])
+    print((location.latitude, location.longitude))
+    request.session['location']=(location.latitude, location.longitude)
+    print request.session['location']
+    # request.session['zip']='37.386402,-121.925215'
+    # print request.session['zip']
     return render(request, 'login_registration/success.html')
 def zipupdate(request):
     return redirect('success')
