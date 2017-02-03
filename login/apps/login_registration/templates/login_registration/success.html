@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Place searches</title>
+    <title>Meetpups - Social Dogging</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
@@ -16,6 +16,7 @@
         margin: 0;
         padding: 0;
       }
+      #map{width: 80%}
     </style>
     <script>
     var map;
@@ -30,10 +31,15 @@
           zoom: 12
         });
 
-      var request = {
+      var parksrequest = {
         location: pyrmont,
         radius: '500',
         query: 'dog parks'
+      };
+      var eventsrequest = {
+        location: pyrmont,
+        radius: '500',
+        query: ''
       };
 
       service = new google.maps.places.PlacesService(map);
@@ -66,32 +72,77 @@
       });
     }
     </script>
+    <script type="text/javascript">
+      $('#login-form').on('submit', function(event){
+      event.preventDefault();
+      console.log("form submitted!")  // sanity check
+      create_post();
+  });
+    </script>
+    <script type="text/javascript">
+      $('#registration-form').on('submit', function(event){
+      event.preventDefault();
+      console.log("form submitted!")  // sanity check
+      create_post();
+  });
+    </script>
   </head>
   <body>
-    <p>HI</p>
-    <form action='/zipupdate'>
-        {% csrf_token %}
-        Zip Code: <input type='text' name='zip'>
-        <input type='submit' value='Submit'>
-    </form>
+    <nav>
+      <div class="nav-wrapper">
+        <a href="{% url 'success' %}"class="brand-logo left">Meetpups</a>
+        <ul id="nav-mobile" class="right">
+          <li><a href="{% url 'profilepage' %}">Back</a></li>
+        </ul>
+      </div>
+    </nav>
+    <!-- <div class="logo">
+      <h1>Meetpups</h1>
+    </div> -->
     <form action='/eventform'>
-        {% csrf_token %}
-        <input type='submit' value='Create Event'>
+      {% csrf_token %}
+      <input type='submit' value='Create Event'>
     </form>
     <form action='/logout'>
-        {% csrf_token %}
-        <input type='submit' value='Logout'>
+      {% csrf_token %}
+      <input type='submit' value='Logout'>
     </form>
     <form action='/register'>
-        {% csrf_token %}
-        <input type='submit' value='Register'>
+      {% csrf_token %}
+      <input type='submit' value='Register'>
     </form>
     <form action='/community'>
-        {% csrf_token %}
-        <input type='submit' value='Community Page'>
+      {% csrf_token %}
+      <input type='submit' value='Community Page'>
     </form>
 
     <div id="map"></div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4&libraries=places&callback=initialize" async defer></script>
+    <div class="form-div">
+      <form id="login" method='POST'>
+        <fieldset>
+          Login
+        </fieldset>
+          {% csrf_token %}
+          <label for= 'email'>Email: <input type='text' name='email' id='email'></label>
+          <label for='password'>Password: <input type='password' name='password' id='password'></label>
+          <input type='submit' value='Login'>
+      </form>
+    </div>
+    <div class="form-div">
+      <form id="registration" action="index.html" method="post">
+        <fieldset>Register
+        </fieldset>
+        {% csrf_token %}
+        <input type="text" name="firstname">
+        <input type="text" name="lastname" >
+        <input type="text" name="email" >
+        <input type="text" name="zipcode" >
+        <input type="password" name="password" >
+        <input type="password" name="confirm" >
+      </form>
+    </div>
   </body>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
 </html>

@@ -3,11 +3,7 @@ from models import User, Pet, Event, Post, Comment, Qa
 from django.contrib import messages
 from django.urls import reverse
 
-# Create your views here.
-
-
 def index(request):
-
     return render(request, "login_registration/index.html")
 
 def print_messages(request, message_list):
@@ -16,12 +12,11 @@ def print_messages(request, message_list):
 
 def loginvalidate(request):
     if request.method == "POST":
-        print 'here'
+        print 'loginvalidate'
         print request.POST['email']
         result = User.objects.loginvalidation(request.POST)
         print "Login validation complete"
         # print result
-
         if result[0] == False:
             print_messages(request, result[1])
             return redirect(reverse('index'))
@@ -30,19 +25,12 @@ def loginvalidate(request):
         print "Passing to the login function"
         return login(request, result[1])
     else:
-        print "Method's not even post for loginvalidate"
+        print "Methods not post for loginvalidate"
         return redirect('/')
 
 def login(request, user):
     print "Here at Login"
-    request.session['user'] = {
-    'id': user.id,
-    'firstname' : user.firstname,
-    'lastname' : user.lastname,
-    'email' : user.email,
-    'zipcode':user.zipcode,
-    'biography' : user.biography
-    }
+    request.session['user'] = user
     return redirect('success')
 
 def registervalidate(request):
@@ -56,8 +44,8 @@ def registervalidate(request):
 
 
 def success(request):
-    if not 'user' in request.session:
-        return redirect('/')
+    # if not 'user' in request.session:
+    #     return redirect('/')
     request.session['zip']='37.386402,-121.925215'
     print request.session['zip']
     return render(request, 'login_registration/success.html')
