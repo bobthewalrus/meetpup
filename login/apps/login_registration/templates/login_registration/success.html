@@ -124,7 +124,7 @@
     <div id="map"></div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4&libraries=places&callback=initialize" async defer></script>
     <div class="form-div">
-      <form id="login" method='POST'>
+      <form action="login" id="login" method='POST'>
         <fieldset>
           <legend>Login</legend>
           {% csrf_token %}
@@ -135,20 +135,22 @@
       </form>
     </div>
     <div class="registration-form-div">
-      <form id="registration" action="index.html" method="post">
+      <form id="registration" action="registervalidate" method="post">
         <fieldset>
         <legend>Register</legend>
         {% csrf_token %}
-        <input type="text" name="firstname">
-        <input type="text" name="lastname" >
-        <input type="text" name="email" >
-        <input type="text" name="zipcode" >
-        <input type="password" name="password" >
-        <input type="password" name="confirm" >
+        <input placeholder="First Name" type="text" name="firstname">
+        <input placeholder="Last Name" type="text" name="lastname" >
+        <input placeholder="Email" type="text" name="email" >
+        <input placeholder="Zip Code" type="text" name="zipcode" >
+        <input placeholder="Password" type="password" name="password" >
+        <input placeholder="Confirm Password" type="password" name="passwordconf" >
+        <input type="submit" value="Register!" >
         </fieldset>
       </form>
     </div>
   </body>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+  {% load staticfiles %}
+  <link rel="stylesheet" href="{% static 'login_registration/css/materialize.css' %}">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
 </html>
