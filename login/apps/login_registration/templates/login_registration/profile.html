@@ -24,8 +24,10 @@
             image_string += "' alt="
             image_string += "'{{breed}}'>"
             image_string = "'" + image_string + "'"
+            description = (res['itemListElement'][0]['result']['detailedDescription']['articleBody'])
             console.log(image_string)
-            $( "dog_picture" ).html(image_string)
+            $( ".dog_picture" ).html(image_string),
+            $( ".description" ).html(description)
           }, "json");
         </script>
   <body>
@@ -59,10 +61,10 @@
           <div class="col s12 m6">
             <div class="card white darken-1 large">
 
-                <div class="image_string">
-                </div>
+
 
               <div class="card-content black-text">
+
                 <span class="card-title center-align">About Me</span>
                 <p>{{user.biography}}</p>
               </div>
@@ -74,11 +76,14 @@
           </div>
           <div class="col s12 m6">
             <div class="card white darken-1 large">
+
               <div class="card-content black-text">
-                <span class="card-title">Card Title</span>
-                <p>I am a very simple card. I am good at containing small bits of information.
-                I am convenient because I require little markup to use effectively.</p>
+                  <p>{{breed}}</p>
+                  <div class="dog_picture">
+                  </div>
+                  <p class="description"> </p>
               </div>
+
             </div>
 
             <a href='{% url 'logout' %}' class="waves-effect waves-light btn" style="width:100%">Logout</a>
