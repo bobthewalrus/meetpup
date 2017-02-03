@@ -3,10 +3,19 @@
     <head>
         <meta charset="utf-8">
         <title>community</title>
-    </head>
-    <body>
-        <h3>Event Map</h3>
-        <div id="map"></div>
+        <style>
+          /* Always set the map height explicitly to define the size of the div
+           * element that contains the map. */
+          #map {
+            height: 100%;
+          }
+          /* Optional: Makes the sample page fill the window. */
+          html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+          }
+        </style>
         <script>
         var map;
         var service;
@@ -56,6 +65,11 @@
           });
         }
         </script>
+    </head>
+    <body>
+        <h3>Event Map</h3>
+        <div id="map"></div>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4&libraries=places&callback=initialize" async defer></script>
         <h3>Community Board </h3>
 
         {% if messages %}

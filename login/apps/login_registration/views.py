@@ -6,7 +6,6 @@ import googlemaps
 
 
 def index(request):
-
     return render(request, "login_registration/index.html")
 
 def print_messages(request, message_list):
@@ -15,12 +14,11 @@ def print_messages(request, message_list):
 
 def loginvalidate(request):
     if request.method == "POST":
-        print 'here'
+        print 'loginvalidate'
         print request.POST['email']
         result = User.objects.loginvalidation(request)
         print "Login validation complete"
         # print result
-
         if result[0] == False:
             print_messages(request, result[1])
             return redirect(reverse('index'))
@@ -29,7 +27,7 @@ def loginvalidate(request):
         print "Passing to the login function"
         return login(request, result[1])
     else:
-        print "Method's not even post for loginvalidate"
+        print "Methods not post for loginvalidate"
         return redirect('/')
 
 def login(request, user):
@@ -56,8 +54,8 @@ def registervalidate(request):
 
 
 def success(request):
-    if not 'user' in request.session:
-        return redirect('/')
+    # if not 'user' in request.session:
+    #     return redirect('/')
     # centeringpoint = request.session['user']['zipcode']
     # geocoder.geocode({'address': centeringpoint}, function(results, status){
     #     if status == google.maps.GeocoderStatus.OK:
@@ -68,7 +66,10 @@ def success(request):
     # })
 
     gmaps = googlemaps.Client(key='AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4')
-    geocode_result = gmaps.geocode(request.session['user']['zipcode'])
+    try:
+        geocode_result = gmaps.geocode(request.session['user']['zipcode'])
+    except:
+        geocode_result = gmaps.geocode(95112)
     location =  geocode_result[0]['geometry']['location']
     request.session['centered']= "{}, {}".format(location['lat'], location['lng'])
     # request.session['zip']='37.386402,-121.925215'
@@ -249,3 +250,8 @@ def addpet(request):
         return redirect('/profilepage')
     else:
         return redirect('/profilepage')
+
+def displayevents(request):
+    events = Event.objects.all()
+    context = {'events': events}
+    return render(request, 'login_registration', context)
