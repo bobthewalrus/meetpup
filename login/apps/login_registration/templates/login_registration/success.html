@@ -9,6 +9,8 @@
        * element that contains the map. */
       #map {
         height: 100%;
+        width: 80%;
+        right: 0;
       }
       /* Optional: Makes the sample page fill the window. */
       html, body {
@@ -16,7 +18,7 @@
         margin: 0;
         padding: 0;
       }
-      #map{width: 80%}
+      form{width: 80%}
     </style>
     <script>
     var map;
@@ -31,16 +33,12 @@
           zoom: 12
         });
 
-      var parksrequest = {
+      var request = {
         location: pyrmont,
         radius: '500',
         query: 'dog parks'
       };
-      var eventsrequest = {
-        location: pyrmont,
-        radius: '500',
-        query: ''
-      };
+
 
       service = new google.maps.places.PlacesService(map);
       service.textSearch(request, callback);
@@ -128,18 +126,18 @@
     <div class="form-div">
       <form id="login" method='POST'>
         <fieldset>
-          Login
-        </fieldset>
+          <legend>Login</legend>
           {% csrf_token %}
           <label for= 'email'>Email: <input type='text' name='email' id='email'></label>
           <label for='password'>Password: <input type='password' name='password' id='password'></label>
           <input type='submit' value='Login'>
+        </fieldset>
       </form>
     </div>
-    <div class="form-div">
+    <div class="registration-form-div">
       <form id="registration" action="index.html" method="post">
-        <fieldset>Register
-        </fieldset>
+        <fieldset>
+        <legend>Register</legend>
         {% csrf_token %}
         <input type="text" name="firstname">
         <input type="text" name="lastname" >
@@ -147,6 +145,7 @@
         <input type="text" name="zipcode" >
         <input type="password" name="password" >
         <input type="password" name="confirm" >
+        </fieldset>
       </form>
     </div>
   </body>

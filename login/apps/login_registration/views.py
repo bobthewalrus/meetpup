@@ -54,8 +54,8 @@ def registervalidate(request):
 
 
 def success(request):
-    if not 'user' in request.session:
-        return redirect('/')
+    # if not 'user' in request.session:
+    #     return redirect('/')
     # centeringpoint = request.session['user']['zipcode']
     # geocoder.geocode({'address': centeringpoint}, function(results, status){
     #     if status == google.maps.GeocoderStatus.OK:
@@ -66,7 +66,10 @@ def success(request):
     # })
 
     gmaps = googlemaps.Client(key='AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4')
-    geocode_result = gmaps.geocode(request.session['user']['zipcode'])
+    try:
+        geocode_result = gmaps.geocode(request.session['user']['zipcode'])
+    except:
+        geocode_result = gmaps.geocode(95112)
     location =  geocode_result[0]['geometry']['location']
     request.session['centered']= "{}, {}".format(location['lat'], location['lng'])
     # request.session['zip']='37.386402,-121.925215'
