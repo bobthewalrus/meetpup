@@ -152,9 +152,10 @@ def post(request):
 #   ***** Delete a post on community page *****
 #------------------------------------------------
 def deletepost(request, post_id):
-    post = Post.objects.filter(id=post_id)
-    post.delete()
-    Comment.objects.filter(post = post).delete()
+    if request.method == "POST":
+        post = Post.objects.filter(id=post_id)
+        post.delete()
+        Comment.objects.filter(post = post).delete()
     return redirect('/community')
 
 #------------------------------------------------
@@ -177,7 +178,13 @@ def comment(request, post_id):
 #      ***** delete comments *********
 #------------------------------------------------
 def deletecomment(request, post_id, comment_id):
-    Comment.objects.filter(id=comment_id).delete()
+    if request.method == "POST":
+        print "==========================post ========================="
+        Comment.objects.filter(id=comment_id).delete()
+        print "=====================hihihihihihihi======================="
+        print post_id
+        print comment_id
+        print "============================================"
     return redirect('/topic/{}'.format(post_id))
 
 #------------------------------------------------

@@ -22,7 +22,10 @@
             <p>
             <a href="/topic/{{post.id}}"> {{post.title}}</a> Posted by <a href="#">{{post.user.firstname}}</a>
             {% if post.user.id ==  request.session.user.id %}
-                <a href="/deletepost/{{post.id}}">Delete</a>
+            <form class="" action="/deletepost/{{post.id}}" method="post">
+                <input type="submit" name="deletepost" value="Delete">
+                {% csrf_token %}
+            </form>
             {% endif %}
             </p>
         {% endfor %}
