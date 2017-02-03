@@ -38,18 +38,18 @@ def login(request, user):
     'lastname' : user.lastname,
     'email' : user.email,
     'zipcode': user.zipcode,
-    'biography' : user.biography
+    # 'biography' : user.biography
     }
     print request.session['user']['zipcode']
     return redirect('success')
 
-def registervalidate(request):
-    result= User.objects.registervalidation(request)
 
+def registervalidate(request):
+    print "registering!"
+    result= User.objects.registervalidation(request)
     if not result[0]:
         print_messages(request, result[1])
-        return redirect('register')
-
+        return redirect('success')
     return login(request, result[1])
 
 
@@ -64,7 +64,6 @@ def success(request):
     # print lat
     # print lng
     # })
-
     gmaps = googlemaps.Client(key='AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4')
     try:
         geocode_result = gmaps.geocode(request.session['user']['zipcode'])
@@ -75,7 +74,6 @@ def success(request):
     # request.session['zip']='37.386402,-121.925215'
     # print request.session['zip']
     return render(request, 'login_registration/success.html')
-
     # var lat = '';
     # var lng = '';
     # var address = {zipcode} or {city and state};
@@ -90,17 +88,19 @@ def success(request):
     # });
     # alert('Latitude: ' + lat + ' Logitude: ' + lng);
 
+
 def zipupdate(request):
     return redirect('success')
 
-def eventform(request):
 
+def eventform(request):
     return render(request,'login_registration/eventform.html')
+
+
 def createevent(request):
     user=request.session['user']['id']
     print user
     result= Event.objects.eventcreator(request)
-
     return redirect('community')
 
 def logout(request):

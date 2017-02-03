@@ -19,13 +19,11 @@ class EventManager(models.Manager):
 class UserManager(models.Manager):
     def registervalidation(self, request):
         errors = self.validate_inputs(request)
-
         if len(errors) >0:
             return (False, errors)
         password = request.POST['password'].encode()
         pw_hash = bcrypt.hashpw(password, bcrypt.gensalt())
         print pw_hash
-
         user = self.create(firstname=request.POST['firstname'], lastname = request.POST['lastname'], email=request.POST['email'], pw_hash=pw_hash, zipcode = request.POST['zipcode'])
         print user.pw_hash
         return (True, user)
