@@ -3,9 +3,26 @@
   <head>
     <meta charset="utf-8">
     <title>Event Creation</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'login_registration/css/style.css' %}"media="screen" title="no title"  charset="utf-8">
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'login_registration/css/materialize.css' %}"media="screen" title="no title"  charset="utf-8">
+    <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <!-- <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/> -->
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
   <body>
-
+    <nav>
+    <div class="nav-wrapper">
+      <a href="{% url 'success' %}"class="brand-logo left">Meetpups</a>
+      <ul id="nav-mobile" class="right">
+        <li>Welcome {{ user.firstname|title}} {{user.lastname|make_list|first|title}}.</li>
+      </ul>
+    </div>
+    </nav>
         {% if messages %}
         <ul class='messages'>
             {% for message in messages %}
@@ -14,22 +31,29 @@
         </ul>
         {% endif %}
 
-    <h1>Event Creation</h1>
-    <form action='/createevent' method='POST'>
-        {% csrf_token %}
-        <label for= 'name'>Name:<input type="text" name='name' id='name'></label>
-        <label for = 'date'>Date: <input type='date' name='date' id='date'></label>
-        <label for = 'time'>Start Time: <input type='time' name='time' id='time'></label>
-        <label for ='duration'>Duration: <input type='text' name='duration'></label>
-        <label for = 'street'>Street Address: <input type='text' name='street'></label>
-        <label for = 'state'>State: <input type='text' name='state'></label>
-        <label for = 'city'>City: <input type='text' name='city'></label>
-        <label for = 'zipcode'>Zipcode: <input type='text' name='zipcode'></label>
-        <label for = 'description'>Description: <input type='text' name='description'></label>
-
-        <input type='submit' value='Submit'>
-    </form>
-
+    <!-- <h1>Event Creation</h1> -->
+    <div class="container">
+    <div class="row">
+      <div class="col s12 center-align">
+        <div class="card grey lighten-4 large center-align" style="height:auto">
+          <span class="card-title center-align">Event Creation</span>
+          <form action='/createevent' method='POST'>
+              {% csrf_token %}
+              <label for= 'name'>Name:<input type="text" name='name' id='name'></label>
+              <label for = 'date'>Date: <input type='date' name='date' id='date'></label>
+              <label for = 'time'>Start Time: <input type='time' name='time' id='time'></label>
+              <label for ='duration'>Duration: <input type='text' name='duration'></label>
+              <label for = 'street'>Street Address: <input type='text' name='street'></label>
+              <label for = 'state'>State: <input type='text' name='state'></label>
+              <label for = 'city'>City: <input type='text' name='city'></label>
+              <label for = 'zipcode'>Zipcode: <input type='text' name='zipcode'></label>
+              <label for = 'description'>Description: <input type='text' name='description'></label>
+              <input type='submit' value='Submit' class="waves-effect waves-light btn">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
   </body>
 </html>

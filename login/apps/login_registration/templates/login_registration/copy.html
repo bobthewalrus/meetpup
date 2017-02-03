@@ -111,18 +111,16 @@
   </head>
   <body>
     <nav>
-      <div class="nav-wrapper">
-        <a href="{% url 'success' %}"class="brand-logo left">Meetpups</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down" style="width:550px">
-          <form action="/loginvalidate" id="login" method='POST'>
-            {% csrf_token %}
-            <li><input class="none" type='text' name='email' id='email' placeholder="Email" style="margin-right:10px"></li>
-            <li><input type='password' name='password' id='password' placeholder="Password"></li>
-            <li><input type='submit' value='Login' class="waves-effect waves-light btn" style="margin-right:10px; border-radius:10px; width:100%"></li>
-          </form>
-          <li><a href="{% url 'register' %}">Sign Up</a></li>
-        </ul>
-      </div>
+    <div class="nav-wrapper">
+      <a href="{% url 'success' %}" class="brand-logo left">Meetpups</a>
+      <ul id="nav-mobile" class="right">
+        <li>Welcome <a href="{% url 'profilepage' %}" style="display:inline-block">{{ user.firstname|title}} {{user.lastname|make_list|first|title}}.</a></li>
+        <li><form action='/logout'>
+          {% csrf_token %}
+          <input type='submit' value='Logout' class="waves-effect waves-light btn" style="margin-left:20px">
+        </form></li>
+      </ul>
+    </div>
     </nav>
     <!-- <div class="logo">
       <h1>Meetpups</h1>
@@ -142,8 +140,8 @@
     </form> -->
       <div class="row center-align" style="height:650px">
         <div class="col s5 card large blue-grey" style="overflow:scroll">
-          <!-- <a href='{% url 'eventform' %}' class="waves-effect waves-light btn" style="width:96%; margin-bottom:10px;">Create New Event</a> -->
-          <a href='#' class="waves-effect waves-light btn" style="width:96%; margin-bottom:10px;">Sign in to Create an Event</a>
+          <a href='{% url 'eventform' %}' class="waves-effect waves-light btn" style="width:96%; margin-bottom:10px;">Create New Event</a>
+          <!-- <a href='#' class="waves-effect waves-light btn" style="width:96%; margin-bottom:10px;">Sign in to Create an Event</a> -->
           {% for x in events %}
           <div class="col s12 m12 center-align">
             <!-- <h2 class="header">Horizontal Card</h2> -->
@@ -174,10 +172,6 @@
       </div>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4&libraries=places&callback=initialize" async defer></script>
-<<<<<<< HEAD
-    <div class="form-div">
-      <form action="loginvalidate" id="login" method='POST'>
-=======
     <div class="row">
 
       <div class="col s4" style="text:center-align">
@@ -217,7 +211,6 @@
     </div>
     <!-- <div class="form-div"> -->
       <!-- <form action="/loginvalidate" id="login" method='POST'>
->>>>>>> 9326a6890499addc5901c900eb8b684c240d8b16
         <fieldset>
           <legend>Login</legend>
           {% csrf_token %}

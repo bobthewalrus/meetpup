@@ -3,7 +3,7 @@ from models import User, Pet, Event, Post, Comment, Qa
 from django.contrib import messages
 from django.urls import reverse
 import googlemaps
-
+from random import randint
 
 def index(request):
     return render(request, "login_registration/index.html")
@@ -21,14 +21,14 @@ def loginvalidate(request):
         # print result
         if result[0] == False:
             print_messages(request, result[1])
-            return redirect('/')
+            return redirect(reverse('success'))
         # print request
         print result[1]
         print "Passing to the login function"
         return login(request, result[1])
     else:
         print "Methods not post for loginvalidate"
-        return redirect('/')
+        return redirect('/success')
 
 def login(request, user):
     print "Here at Login"
@@ -53,7 +53,32 @@ def registervalidate(request):
     return login(request, result[1])
 
 
+def copy(request):
+    user = User.objects.filter(id=request.session['user']['id'])[0]
+    context = {
+        'user':user,
+        'events':Event.objects.all()
+    }
+    return render(request, 'login_registration/copy.html', context)
+
+
 def success(request):
+    if request.session.has_key('user'):
+        return redirect('/copy')
+    # if not 'user' in request.session:
+    #     return redirect('/')
+    # centeringpoint = request.session['user']['zipcode']
+    # geocoder.geocode({'address': centeringpoint}, function(results, status){
+    #     if status == google.maps.GeocoderStatus.OK:
+    #         lat = results[0].geometry.location.lat()
+    #         lng = results[0].geometry.location.lng()
+    # print lat
+    # print lng
+    # })
+    # user = User.objects.filter(id=request.session['user']['id'])[0]
+    context = {
+        'events':Event.objects.all()
+    }
     gmaps = googlemaps.Client(key='AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4')
     try:
         geocode_result = gmaps.geocode(request.session['user']['zipcode'])
@@ -61,7 +86,22 @@ def success(request):
         geocode_result = gmaps.geocode(95112)
     location =  geocode_result[0]['geometry']['location']
     request.session['centered']= "{}, {}".format(location['lat'], location['lng'])
-    return render(request, 'login_registration/success.html')
+    # request.session['zip']='37.386402,-121.925215'
+    # print request.session['zip']
+    return render(request, 'login_registration/success.html', context)
+    # var lat = '';
+    # var lng = '';
+    # var address = {zipcode} or {city and state};
+    # geocoder.geocode( { 'address': address}, function(results, status) {
+    #   if (status == google.maps.GeocoderStatus.OK) {
+    #      lat = results[0].geometry.location.lat();
+    #      lng = results[0].geometry.location.lng();
+    #     });
+    #   } else {
+    #     alert("Geocode was not successful for the following reason: " + status);
+    #   }
+    # });
+    # alert('Latitude: ' + lat + ' Logitude: ' + lng);
 
 
 def zipupdate(request):
@@ -69,7 +109,12 @@ def zipupdate(request):
 
 
 def eventform(request):
-    return render(request,'login_registration/eventform.html')
+    user = User.objects.filter(id=request.session['user']['id'])[0]
+    context = {
+        'user':user,
+        'events':Event.objects.all()
+    }
+    return render(request,'login_registration/eventform.html', context)
 
 
 def createevent(request):
@@ -79,16 +124,19 @@ def createevent(request):
     return redirect('community')
 
 def logout(request):
-    request.session.clear()
-    return redirect('/')
+    request.session.flush()
+    # request.session.pop('user')
+    return redirect('/success')
 
 def register(request):
     return render(request, 'login_registration/registration.html')
 
 def community(request):
+    user = User.objects.filter(id=request.session['user']['id'])[0]
     posts = Post.objects.all()
     context ={
-    'posts':posts
+    'posts':posts,
+    'user':user
     }
     return render(request, 'login_registration/community.html', context)
 
@@ -100,11 +148,13 @@ def adoption(request):
 
 
 def topic(request, post_id):
+    user = User.objects.filter(id=request.session['user']['id'])[0]
     post = Post.objects.filter(id=post_id)[0]
     comments = Comment.objects.filter(post = post)
     context={
         'post':post,
         'comments':comments,
+        'user':user
     }
     return render(request, 'login_registration/forumtopic.html', context)
 
@@ -167,8 +217,10 @@ def deletecomment(request, post_id, comment_id):
 #     *****  the rest of the code :D  *******
 #------------------------------------------------
 def profilepage(request):
+    user = User.objects.filter(id=request.session['user']['id'])[0]
     context = {
-        'user': User.objects.filter(id=request.session['user']['id'])[0]
+        'user': User.objects.filter(id=request.session['user']['id'])[0],
+        'pets':Pet.objects.filter(user=user)
     }
     return render(request, 'login_registration/profile.html', context)
 
@@ -219,16 +271,24 @@ def addpet(request):
     pet_bd = request.POST['pet_birthday']
     pet_name = request.POST['pet_name']
     pet_breed = request.POST['pet_breed']
+    about = request.POST['pet_bio']
+    random_image =["http://familypetvacaville.com/clients/9658/images/company_images/.resized/.resized_500x500_Labrador%20(yellow)%20image%20courtesy%20of%20Luigi%20Diamanti%20at%20FreeDigitalPhotos.net.jpg", "http://upshout.net/wp-content/uploads/2015/07/husky-001.jpg","https://c1.staticflickr.com/8/7399/9540655005_753bbb8da3.jpg","https://i1.sndcdn.com/artworks-000145042959-4j4w1d-t500x500.jpg"]
+    picker = randint(0,3)
+    print random_image[0]
+    image = random_image[picker]
     valid = True
 
     if len(pet_name) <1:
+        valid = False
+
+    if len(about) < 1:
         valid = False
 
     if len(pet_bd) <1:
         valid = False
 
     if valid:
-        Pet.objects.create(name=pet_name, birthday = pet_bd, breed=pet_breed, user=user)
+        Pet.objects.create(name=pet_name, birthday = pet_bd, breed=pet_breed, user=user, image=image, biography=about)
         return redirect('/profilepage')
     else:
         return redirect('/profilepage')

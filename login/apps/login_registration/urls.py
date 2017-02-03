@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.success, name='success'),
-    url(r'^login', views.index),
+    # url(r'^login$', views.success),
     url(r'^loginvalidate$', views.loginvalidate, name='loginvalidate'),
     url(r'^registervalidate$', views.registervalidate, name='registervalidate'),
     url(r'^success$', views.success, name='success'),
@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^comment/(?P<post_id>\d+)$', views.comment),
     url(r'^deletecomment/(?P<post_id>\d+)/(?P<comment_id>\d+)$', views.deletecomment),
     url(r'^deletepost/(?P<post_id>\d+)$', views.deletepost),
+    url(r'^copy$', views.copy)
 ]

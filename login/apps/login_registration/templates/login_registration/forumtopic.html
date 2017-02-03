@@ -3,11 +3,29 @@
     <head>
         <meta charset="utf-8">
         <title>Topics</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'login_registration/css/materialize.css' %}"media="screen" title="no title"  charset="utf-8">
+        <!--Import Google Icon Font-->
+          <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+          <!--Import materialize.css-->
+          <!-- <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/> -->
+          <!--Let browser know website is optimized for mobile-->
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
+      <nav>
+      <div class="nav-wrapper">
+        <a href="{% url 'success' %}" class="brand-logo left">Meetpups</a>
+        <ul id="nav-mobile" class="right">
+          <li>Welcome <a href="{% url 'profilepage' %}" style="display:inline-block">{{ user.firstname|title}} {{user.lastname|make_list|first|title}}.</a></li>
+          <li><form action='/logout'>
+            {% csrf_token %}
+            <input type='submit' value='Logout' class="waves-effect waves-light btn" style="margin-left:20px">
+          </form></li>
+        </ul>
+      </div>
+      </nav>
         <h3> Community Board Topics</h3>
-
-        <a href="/logout">Logout</a><br>
         <a href="/post">Back</a><br>
 
 
@@ -40,6 +58,27 @@
             <input type="submit" name="post" value="Comment">
         </form>
 
-
+        <footer class="page-footer">
+                <div class="container">
+                  <div class="row">
+                    <div class="col l6 s12">
+                      <h5 class="white-text">Like our Page?</h5>
+                      <p class="grey-text text-lighten-4">Spread the love!</p>
+                    </div>
+                    <div class="col l4 offset-l2 s12">
+                    <h5 class="white-text">Check out the Community!</h5>
+                    <ul>
+                      <li><a class="grey-text text-lighten-3" href="{% url 'community' %}">Forums</a></li>
+                      <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                    </ul>
+                  </div>
+                  </div>
+                </div>
+                <div class="footer-copyright">
+                  <div class="container">
+                  © Meetpup LLC
+                  </div>
+                </div>
+              </footer>
     </body>
 </html>
