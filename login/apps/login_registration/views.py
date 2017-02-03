@@ -205,22 +205,24 @@ def comment(request, post_id):
 #------------------------------------------------
 def deletecomment(request, post_id, comment_id):
     if request.method == "POST":
-        print "==========================post ========================="
         Comment.objects.filter(id=comment_id).delete()
-        print "=====================hihihihihihihi======================="
         print post_id
         print comment_id
-        print "============================================"
     return redirect('/topic/{}'.format(post_id))
 
 #------------------------------------------------
 #     *****  the rest of the code :D  *******
 #------------------------------------------------
 def profilepage(request):
-    user = User.objects.filter(id=request.session['user']['id'])[0]
+    if "pet_breed" in request.session:
+        breed = request.session['pet_breed']
+        context = {
+            'user': User.objects.filter(id=request.session['user']['id'])[0],
+            "breed": breed
+        }
+        return render(request, 'login_registration/profile.html', context)
     context = {
         'user': User.objects.filter(id=request.session['user']['id'])[0],
-        'pets':Pet.objects.filter(user=user)
     }
     return render(request, 'login_registration/profile.html', context)
 
@@ -271,6 +273,8 @@ def addpet(request):
     pet_bd = request.POST['pet_birthday']
     pet_name = request.POST['pet_name']
     pet_breed = request.POST['pet_breed']
+    if pet_breed:
+        request.session['pet_breed']=pet_breed
     about = request.POST['pet_bio']
     random_image =["http://familypetvacaville.com/clients/9658/images/company_images/.resized/.resized_500x500_Labrador%20(yellow)%20image%20courtesy%20of%20Luigi%20Diamanti%20at%20FreeDigitalPhotos.net.jpg", "http://upshout.net/wp-content/uploads/2015/07/husky-001.jpg","https://c1.staticflickr.com/8/7399/9540655005_753bbb8da3.jpg","https://i1.sndcdn.com/artworks-000145042959-4j4w1d-t500x500.jpg"]
     picker = randint(0,3)
