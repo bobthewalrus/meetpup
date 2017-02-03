@@ -23,4 +23,6 @@ urlpatterns = [
     url(r'^forumtopic$', views.forumtopic),
     url(r'^topic/(?P<post_id>\d+)$', views.topic),
     url(r'^comment/(?P<post_id>\d+)$', views.comment),
+    url(r'^deletecomment/(?P<post_id>\d+)/(?P<comment_id>\d+)$', views.deletecomment),
+    url(r'^deletepost/(?P<post_id>\d+)$', views.deletepost),
 ]

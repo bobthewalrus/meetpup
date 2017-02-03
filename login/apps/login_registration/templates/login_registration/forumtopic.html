@@ -7,12 +7,29 @@
     <body>
         <h3> Community Board Topics</h3>
 
+        <a href="/logout">Logout</a><br>
+        <a href="/post">Back</a><br>
+
+
+        {% if messages %}
+            {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+            {% endfor %}
+        {% endif %}
+
         <h4>{{post.title}}</h4>
         <p>{{post.description}}<p>
 
         {% for comment in comments %}
-            <p>{{comment.user.firstname}} says: {{comment.description}}</p>
+            <p>{{comment.user.firstname}} says: {{comment.description}}
+            {% if comment.user.id ==  request.session.user.id %}
+                <a href="/deletecomment/{{comment.post.id}}/{{comment.id}}">Delete</a>
+                </p>
+            {% endif %}
         {% endfor %}
+
 
         <form class="" action="/comment/{{post.id}}" method="post">
             <textarea name="description" rows="8" cols="80" placeholder="Comment"></textarea><br>

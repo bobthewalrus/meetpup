@@ -2,6 +2,8 @@ from django.shortcuts import render, HttpResponse, redirect
 from models import User, Pet, Event, Post, Comment, Qa
 from django.contrib import messages
 from django.urls import reverse
+import googlemaps
+
 
 def index(request):
     return render(request, "login_registration/index.html")
@@ -14,7 +16,7 @@ def loginvalidate(request):
     if request.method == "POST":
         print 'loginvalidate'
         print request.POST['email']
-        result = User.objects.loginvalidation(request.POST)
+        result = User.objects.loginvalidation(request)
         print "Login validation complete"
         # print result
         if result[0] == False:
@@ -30,7 +32,15 @@ def loginvalidate(request):
 
 def login(request, user):
     print "Here at Login"
-    request.session['user'] = user
+    request.session['user'] = {
+    'id': user.id,
+    'firstname' : user.firstname,
+    'lastname' : user.lastname,
+    'email' : user.email,
+    'zipcode': user.zipcode,
+    'biography' : user.biography
+    }
+    print request.session['user']['zipcode']
     return redirect('success')
 
 def registervalidate(request):
@@ -44,11 +54,39 @@ def registervalidate(request):
 
 
 def success(request):
-    # if not 'user' in request.session:
-    #     return redirect('/')
-    request.session['zip']='37.386402,-121.925215'
-    print request.session['zip']
+    if not 'user' in request.session:
+        return redirect('/')
+    # centeringpoint = request.session['user']['zipcode']
+    # geocoder.geocode({'address': centeringpoint}, function(results, status){
+    #     if status == google.maps.GeocoderStatus.OK:
+    #         lat = results[0].geometry.location.lat()
+    #         lng = results[0].geometry.location.lng()
+    # print lat
+    # print lng
+    # })
+
+    gmaps = googlemaps.Client(key='AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4')
+    geocode_result = gmaps.geocode(request.session['user']['zipcode'])
+    location =  geocode_result[0]['geometry']['location']
+    request.session['centered']= "{}, {}".format(location['lat'], location['lng'])
+    # request.session['zip']='37.386402,-121.925215'
+    # print request.session['zip']
     return render(request, 'login_registration/success.html')
+
+    # var lat = '';
+    # var lng = '';
+    # var address = {zipcode} or {city and state};
+    # geocoder.geocode( { 'address': address}, function(results, status) {
+    #   if (status == google.maps.GeocoderStatus.OK) {
+    #      lat = results[0].geometry.location.lat();
+    #      lng = results[0].geometry.location.lng();
+    #     });
+    #   } else {
+    #     alert("Geocode was not successful for the following reason: " + status);
+    #   }
+    # });
+    # alert('Latitude: ' + lat + ' Logitude: ' + lng);
+
 def zipupdate(request):
     return redirect('success')
 
@@ -78,24 +116,11 @@ def community(request):
     return render(request, 'login_registration/community.html', context)
 
 def forumtopic(request):
-    # posts = Post.objects.all()
-    # context ={
-    # 'posts':posts
-    # }
-
     return render(request, 'login_registration/forumtopic.html')
 
 def adoption(request):
     return render(request, 'login_registration/adoption.html')
 
-def post(request):
-    if request.method =="POST":
-            user_id = request.session['user']['id']
-            user = User.objects.filter(id=user_id)[0]
-            title = request.POST['title']
-            description = request.POST['description']
-            new_post = Post.objects.create(description=description, user=user, title=title)
-    return redirect('/community')
 
 def topic(request, post_id):
     post = Post.objects.filter(id=post_id)[0]
@@ -106,25 +131,65 @@ def topic(request, post_id):
     }
     return render(request, 'login_registration/forumtopic.html', context)
 
+#------------------------------------------------
+# *** Start a new thread on community page ****
+#------------------------------------------------
+def post(request):
+    if request.method =="POST":
+            user_id = request.session['user']['id']
+            user = User.objects.filter(id=user_id)[0]
+            title = request.POST['title']
+            description = request.POST['description']
+            if not title or not description:
+                messages.add_message(request, messages.INFO, "Please provide title and description")
+                return redirect('/community')
+            new_post = Post.objects.create(description=description, user=user, title=title)
+    return redirect('/community')
+
+#------------------------------------------------
+#   ***** Delete a post on community page *****
+#------------------------------------------------
+def deletepost(request, post_id):
+    post = Post.objects.filter(id=post_id)
+    post.delete()
+    Comment.objects.filter(post = post).delete()
+    return redirect('/community')
+
+#------------------------------------------------
+#      ***** leave a comment for a post *********
+#------------------------------------------------
 def comment(request, post_id):
     if request.method == "POST":
         user_id = request.session['user']['id']
         user = User.objects.filter(id=user_id)[0]
         description = request.POST['description']
+        if not description:
+            messages.add_message(request, messages.INFO, "Comment can not be empty")
+            return redirect('/topic/{}'.format(post_id))
         post = Post.objects.filter(id=post_id)[0]
         post_id= post.id
         new_comment = Comment.objects.create(user=user, post=post, description=description)
     return redirect('/topic/{}'.format(post_id))
 
+#------------------------------------------------
+#      ***** delete comments *********
+#------------------------------------------------
+def deletecomment(request, post_id, comment_id):
+    Comment.objects.filter(id=comment_id).delete()
+    return redirect('/topic/{}'.format(post_id))
+
+#------------------------------------------------
+#     *****  the rest of the code :D  *******
+#------------------------------------------------
 def profilepage(request):
     context = {
-        'user': User.objects.get(id=request.session['user']['id'])
+        'user': User.objects.filter(id=request.session['user']['id'])[0]
     }
     return render(request, 'login_registration/profile.html', context)
 
 def editprofile(request):
     context = {
-        'user': User.objects.get(id=request.session['user']['id'])
+        'user': User.objects.filter(id=request.session['user']['id'])[0]
     }
     return render(request, 'login_registration/edit.html', context)
 
@@ -178,10 +243,10 @@ def addpet(request):
         valid = False
 
     if valid:
-        Pet.objects.create(name=pet_name, birthday = pet_bd, breed=pet_breed)
+        Pet.objects.create(name=pet_name, birthday = pet_bd, breed=pet_breed, user=user)
         return redirect('/profilepage')
     else:
-        return redirect('/addpet')
+        return redirect('/profilepage')
 
 def displayevents(request):
     events = Event.objects.all()

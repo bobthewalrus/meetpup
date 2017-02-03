@@ -24,7 +24,7 @@
     var infowindow;
 
     function initialize() {
-      var pyrmont = new google.maps.LatLng({{request.session.zip}});
+      var pyrmont = new google.maps.LatLng({{request.session.centered}});
 
       map = new google.maps.Map(document.getElementById('map'), {
           center: pyrmont,
@@ -72,6 +72,14 @@
       });
     }
     </script>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'login_registration/css/materialize.css' %}"media="screen" title="no title"  charset="utf-8">
+    <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <!-- <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/> -->
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script type="text/javascript">
       $('#login-form').on('submit', function(event){
       event.preventDefault();
@@ -115,7 +123,6 @@
       {% csrf_token %}
       <input type='submit' value='Community Page'>
     </form>
-
     <div id="map"></div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4&libraries=places&callback=initialize" async defer></script>
     <div class="form-div">
