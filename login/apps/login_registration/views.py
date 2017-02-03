@@ -155,20 +155,24 @@ def comment(request, post_id):
 #------------------------------------------------
 def deletecomment(request, post_id, comment_id):
     if request.method == "POST":
-        print "==========================post ========================="
         Comment.objects.filter(id=comment_id).delete()
-        print "=====================hihihihihihihi======================="
         print post_id
         print comment_id
-        print "============================================"
     return redirect('/topic/{}'.format(post_id))
 
 #------------------------------------------------
 #     *****  the rest of the code :D  *******
 #------------------------------------------------
 def profilepage(request):
+    if "pet_breed" in request.session:
+        breed = request.session['pet_breed']
+        context = {
+            'user': User.objects.filter(id=request.session['user']['id'])[0],
+            "breed": breed
+        }
+        return render(request, 'login_registration/profile.html', context)
     context = {
-        'user': User.objects.filter(id=request.session['user']['id'])[0]
+        'user': User.objects.filter(id=request.session['user']['id'])[0],
     }
     return render(request, 'login_registration/profile.html', context)
 
@@ -219,6 +223,8 @@ def addpet(request):
     pet_bd = request.POST['pet_birthday']
     pet_name = request.POST['pet_name']
     pet_breed = request.POST['pet_breed']
+    if pet_breed:
+        request.session['pet_breed']=pet_breed
     valid = True
 
     if len(pet_name) <1:
