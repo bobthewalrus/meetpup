@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from models import User, Pet, Event, Post, Comment, Qa
 from django.contrib import messages
 from django.urls import reverse
+import googlemaps
 
 # Create your views here.
 
@@ -59,13 +60,37 @@ def registervalidate(request):
 def success(request):
     if not 'user' in request.session:
         return redirect('/')
-    # location = geolocator.geocode(request.session['user']['zipcode'])
-    print((location.latitude, location.longitude))
-    request.session['location']=(location.latitude, location.longitude)
-    print request.session['location']
+    # centeringpoint = request.session['user']['zipcode']
+    # geocoder.geocode({'address': centeringpoint}, function(results, status){
+    #     if status == google.maps.GeocoderStatus.OK:
+    #         lat = results[0].geometry.location.lat()
+    #         lng = results[0].geometry.location.lng()
+    # print lat
+    # print lng
+    # })
+
+    gmaps = googlemaps.Client(key='AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4')
+    geocode_result = gmaps.geocode(request.session['user']['zipcode'])
+    location =  geocode_result[0]['geometry']['location']
+    request.session['centered']= "{}, {}".format(location['lat'], location['lng'])
     # request.session['zip']='37.386402,-121.925215'
     # print request.session['zip']
     return render(request, 'login_registration/success.html')
+
+    # var lat = '';
+    # var lng = '';
+    # var address = {zipcode} or {city and state};
+    # geocoder.geocode( { 'address': address}, function(results, status) {
+    #   if (status == google.maps.GeocoderStatus.OK) {
+    #      lat = results[0].geometry.location.lat();
+    #      lng = results[0].geometry.location.lng();
+    #     });
+    #   } else {
+    #     alert("Geocode was not successful for the following reason: " + status);
+    #   }
+    # });
+    # alert('Latitude: ' + lat + ' Logitude: ' + lng);
+
 def zipupdate(request):
     return redirect('success')
 
