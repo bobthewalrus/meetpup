@@ -264,7 +264,10 @@ def addpet(request):
     pet_name = request.POST['pet_name']
     pet_breed = request.POST['pet_breed']
     about = request.POST['pet_bio']
-    image = "http://familypetvacaville.com/clients/9658/images/company_images/.resized/.resized_500x500_Labrador%20(yellow)%20image%20courtesy%20of%20Luigi%20Diamanti%20at%20FreeDigitalPhotos.net.jpg"
+    random_image =["http://familypetvacaville.com/clients/9658/images/company_images/.resized/.resized_500x500_Labrador%20(yellow)%20image%20courtesy%20of%20Luigi%20Diamanti%20at%20FreeDigitalPhotos.net.jpg", "http://upshout.net/wp-content/uploads/2015/07/husky-001.jpg","https://c1.staticflickr.com/8/7399/9540655005_753bbb8da3.jpg","https://i1.sndcdn.com/artworks-000145042959-4j4w1d-t500x500.jpg"]
+    picker = randint(0,3)
+    print random_image[0]
+    image = random_image[picker]
     valid = True
 
     if len(pet_name) <1:

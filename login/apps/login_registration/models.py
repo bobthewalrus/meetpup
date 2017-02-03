@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 import bcrypt, re
+from random import randint
 
 emailregex = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.+_-]+\.[a-zA-Z]+$')
 nameregex = re.compile(r'^[a-zA-Z]+$')
