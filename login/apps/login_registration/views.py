@@ -3,7 +3,7 @@ from models import User, Pet, Event, Post, Comment, Qa
 from django.contrib import messages
 from django.urls import reverse
 import googlemaps
-
+from random import randint
 
 def index(request):
     return render(request, "login_registration/index.html")
@@ -64,6 +64,10 @@ def success(request):
     # print lat
     # print lng
     # })
+    # user = User.objects.filter(id=request.session['user']['id'])[0]
+    context = {
+        'events':Event.objects.all()
+    }
     gmaps = googlemaps.Client(key='AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4')
     try:
         geocode_result = gmaps.geocode(request.session['user']['zipcode'])
@@ -73,7 +77,7 @@ def success(request):
     request.session['centered']= "{}, {}".format(location['lat'], location['lng'])
     # request.session['zip']='37.386402,-121.925215'
     # print request.session['zip']
-    return render(request, 'login_registration/success.html')
+    return render(request, 'login_registration/success.html', context)
     # var lat = '';
     # var lng = '';
     # var address = {zipcode} or {city and state};
@@ -104,9 +108,9 @@ def createevent(request):
     return redirect('community')
 
 def logout(request):
-    request.session.clear()
+    request.session.flush()
     # request.session.pop('user')
-    return redirect('/')
+    return redirect('/success')
 
 def register(request):
     return render(request, 'login_registration/registration.html')

@@ -7,7 +7,23 @@
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
+      .none{
+        background-color: #ffffff;
+        border: 1px solid #cccccc;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+        -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+        -ms-transition: border linear 0.2s, box-shadow linear 0.2s;
+        -o-transition: border linear 0.2s, box-shadow linear 0.2s;
+        transition: border linear 0.2s, box-shadow linear 0.2s;
+      }
       #map {
+        margin-top:5px;
         height: 100%;
         width: 100%;
         right: 0;
@@ -97,14 +113,14 @@
     <nav>
       <div class="nav-wrapper">
         <a href="{% url 'success' %}"class="brand-logo left">Meetpups</a>
-        <ul id="nav-mobile" class="right">
-          <li>Email: </li>
-          <li><input type='text' name='email' id='email'></li>
-          <li>Password: </li>
-          <li><input type='password' name='password' id='password'></label></li>
-          <li><input type='submit' value='Login'></li>
-          <li>Not a User?</li>
-          <li><a href="{% url 'register' %}">Register</a></li>
+        <ul id="nav-mobile" class="right hide-on-med-and-down" style="width:550px">
+          <form action="/loginvalidate" id="login" method='POST'>
+            {% csrf_token %}
+            <li><input class="none" type='text' name='email' id='email' placeholder="Email" style="margin-right:10px"></li>
+            <li><input type='password' name='password' id='password' placeholder="Password"></li>
+            <li><input type='submit' value='Login' class="waves-effect waves-light btn" style="margin-right:10px; border-radius:10px; width:100%"></li>
+          </form>
+          <li><a href="{% url 'register' %}">Signup</a></li>
         </ul>
       </div>
     </nav>
@@ -115,10 +131,7 @@
       {% csrf_token %}
       <input type='submit' value='Create Event'>
     </form> -->
-    <form action='/logout'>
-      {% csrf_token %}
-      <input type='submit' value='Logout'>
-    </form>
+
     <!-- <form action='/register'>
       {% csrf_token %}
       <input type='submit' value='Register'>
@@ -127,11 +140,34 @@
       {% csrf_token %}
       <input type='submit' value='Community Page'>
     </form> -->
-      <div class="row" style="height:800px">
-        <div class="col s5 card large" style="background-color:gray">
-          hi
-          <a href='{% url 'eventform' %}' class="waves-effect waves-light btn" style="width:100%">Create New Event</a>
-
+      <div class="row center-align" style="height:800px">
+        <div class="col s5 card large blue-grey" style="overflow:scroll">
+          <a href='{% url 'eventform' %}' class="waves-effect waves-light btn" style="width:96%; margin-bottom:10px;">Create New Event</a>
+          {% for x in events %}
+          <div class="col s12 m12 center-align">
+            <!-- <h2 class="header">Horizontal Card</h2> -->
+            <div class="card horizontal">
+              <div class="card-image">
+                <img src="http://lorempixel.com/100/190/nature/8">
+              </div>
+              <div class="card-stacked">
+                <div class="card-content">
+                  <h5>{{x.name}}</h5>
+                  <p>{{x.date}}</p>
+                  <p>At {{x.time}} for {{x.duration}} by {{x.user.firstname|title}}</p>
+                </div>
+                <div class="card-action">
+                  <a href="#">Check out the Event</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          <!-- {% for event in events %}
+          <p>{{event.name}}</p>
+          <p>{{event.date}}</p>
+          <p>{{event.time}}</p>
+          {% endfor %} -->
         </div>
         <div class="col s7 right" style="height:80%"><div id="map"></div></div>
       </div>
@@ -147,7 +183,11 @@
         </fieldset>
       </form>
     </div>
-    <div class="registration-form-div">
+    <form action='/logout'>
+      {% csrf_token %}
+      <input type='submit' value='Logout'>
+    </form>
+    <!-- <div class="registration-form-div">
       <form id="registration" action="registervalidate" method="post">
         <fieldset>
         <legend>Register</legend>
@@ -161,7 +201,7 @@
         <input type="submit" value="Register!" >
         </fieldset>
       </form>
-    </div>
+    </div> -->
     <footer class="page-footer">
             <div class="container">
               <div class="row">
