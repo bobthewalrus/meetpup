@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Place searches</title>
+    <title>Meetpups - Social Dogging</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
@@ -9,6 +9,8 @@
        * element that contains the map. */
       #map {
         height: 100%;
+        width: 80%;
+        right: 0;
       }
       /* Optional: Makes the sample page fill the window. */
       html, body {
@@ -16,6 +18,7 @@
         margin: 0;
         padding: 0;
       }
+      form{width: 80%}
     </style>
     <script>
     var map;
@@ -35,6 +38,7 @@
         radius: '500',
         query: 'dog parks'
       };
+
 
       service = new google.maps.places.PlacesService(map);
       service.textSearch(request, callback);
@@ -74,39 +78,77 @@
       <!-- <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/> -->
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script type="text/javascript">
+      $('#login-form').on('submit', function(event){
+      event.preventDefault();
+      console.log("form submitted!")  // sanity check
+      create_post();
+  });
+    </script>
+    <script type="text/javascript">
+      $('#registration-form').on('submit', function(event){
+      event.preventDefault();
+      console.log("form submitted!")  // sanity check
+      create_post();
+  });
+    </script>
   </head>
   <body>
     <nav>
-    <div class="nav-wrapper">
-      <a href="{% url 'index' %}"class="brand-logo left">Meetpups</a>
-      <ul id="nav-mobile" class="right">
-        <li><a href="{% url 'profilepage' %}">Back</a></li>
-      </ul>
-    </div>
+      <div class="nav-wrapper">
+        <a href="{% url 'success' %}"class="brand-logo left">Meetpups</a>
+        <ul id="nav-mobile" class="right">
+          <li><a href="{% url 'profilepage' %}">Back</a></li>
+        </ul>
+      </div>
     </nav>
-    <p>HI</p>
-    <form action='/zipupdate'>
-        {% csrf_token %}
-        Zip Code: <input type='text' name='zip'>
-        <input type='submit' value='Submit'>
-    </form>
+    <!-- <div class="logo">
+      <h1>Meetpups</h1>
+    </div> -->
     <form action='/eventform'>
-        {% csrf_token %}
-        <input type='submit' value='Create Event'>
+      {% csrf_token %}
+      <input type='submit' value='Create Event'>
     </form>
     <form action='/logout'>
-        {% csrf_token %}
-        <input type='submit' value='Logout'>
+      {% csrf_token %}
+      <input type='submit' value='Logout'>
     </form>
     <form action='/register'>
-        {% csrf_token %}
-        <input type='submit' value='Register'>
+      {% csrf_token %}
+      <input type='submit' value='Register'>
     </form>
     <form action='/community'>
-        {% csrf_token %}
-        <input type='submit' value='Community Page'>
+      {% csrf_token %}
+      <input type='submit' value='Community Page'>
     </form>
     <div id="map"></div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4&libraries=places&callback=initialize" async defer></script>
+    <div class="form-div">
+      <form id="login" method='POST'>
+        <fieldset>
+          <legend>Login</legend>
+          {% csrf_token %}
+          <label for= 'email'>Email: <input type='text' name='email' id='email'></label>
+          <label for='password'>Password: <input type='password' name='password' id='password'></label>
+          <input type='submit' value='Login'>
+        </fieldset>
+      </form>
+    </div>
+    <div class="registration-form-div">
+      <form id="registration" action="index.html" method="post">
+        <fieldset>
+        <legend>Register</legend>
+        {% csrf_token %}
+        <input type="text" name="firstname">
+        <input type="text" name="lastname" >
+        <input type="text" name="email" >
+        <input type="text" name="zipcode" >
+        <input type="password" name="password" >
+        <input type="password" name="confirm" >
+        </fieldset>
+      </form>
+    </div>
   </body>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
 </html>
