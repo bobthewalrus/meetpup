@@ -21,7 +21,7 @@ def loginvalidate(request):
         # print result
         if result[0] == False:
             print_messages(request, result[1])
-            return redirect(reverse('index'))
+            return redirect('/')
         # print request
         print result[1]
         print "Passing to the login function"
@@ -54,16 +54,6 @@ def registervalidate(request):
 
 
 def success(request):
-    # if not 'user' in request.session:
-    #     return redirect('/')
-    # centeringpoint = request.session['user']['zipcode']
-    # geocoder.geocode({'address': centeringpoint}, function(results, status){
-    #     if status == google.maps.GeocoderStatus.OK:
-    #         lat = results[0].geometry.location.lat()
-    #         lng = results[0].geometry.location.lng()
-    # print lat
-    # print lng
-    # })
     gmaps = googlemaps.Client(key='AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4')
     try:
         geocode_result = gmaps.geocode(request.session['user']['zipcode'])
@@ -71,22 +61,7 @@ def success(request):
         geocode_result = gmaps.geocode(95112)
     location =  geocode_result[0]['geometry']['location']
     request.session['centered']= "{}, {}".format(location['lat'], location['lng'])
-    # request.session['zip']='37.386402,-121.925215'
-    # print request.session['zip']
     return render(request, 'login_registration/success.html')
-    # var lat = '';
-    # var lng = '';
-    # var address = {zipcode} or {city and state};
-    # geocoder.geocode( { 'address': address}, function(results, status) {
-    #   if (status == google.maps.GeocoderStatus.OK) {
-    #      lat = results[0].geometry.location.lat();
-    #      lng = results[0].geometry.location.lng();
-    #     });
-    #   } else {
-    #     alert("Geocode was not successful for the following reason: " + status);
-    #   }
-    # });
-    # alert('Latitude: ' + lat + ' Logitude: ' + lng);
 
 
 def zipupdate(request):
@@ -105,7 +80,6 @@ def createevent(request):
 
 def logout(request):
     request.session.clear()
-    # request.session.pop('user')
     return redirect('/')
 
 def register(request):
@@ -139,6 +113,7 @@ def topic(request, post_id):
 #------------------------------------------------
 def post(request):
     if request.method =="POST":
+            print request.session['user']['id']
             user_id = request.session['user']['id']
             user = User.objects.filter(id=user_id)[0]
             title = request.POST['title']

@@ -8,6 +8,8 @@
            * element that contains the map. */
           #map {
             height: 100%;
+            width: 80%;
+            right: 0;
           }
           /* Optional: Makes the sample page fill the window. */
           html, body {
@@ -15,6 +17,7 @@
             margin: 0;
             padding: 0;
           }
+          form{width: 80%}
         </style>
         <script>
         var map;
@@ -35,60 +38,12 @@
             query: 'dog parks'
           };
 
-          service = new google.maps.places.PlacesService(map);
-          service.textSearch(request, callback);
-        }
-
-        function callback(results, s        <div id="map"></div>
-        <script>
-        var map;
-        var service;
-        var infowindow;
-
-        function initialize() {
-          var pyrmont = new google.maps.LatLng({{request.session.centered}});
-
-          map = new google.maps.Map(document.getElementById('map'), {
-              center: pyrmont,
-              zoom: 12
-            });
-
-          var request = {
-            location: pyrmont,
-            radius: '500',
-            query: 'dog parks'
-          };
 
           service = new google.maps.places.PlacesService(map);
           service.textSearch(request, callback);
         }
 
         function callback(results, status) {
-          if (status == google.maps.places.PlacesServiceStatus.OK) {
-            for (var i = 0; i < results.length; i++) {
-              var place = results[i];
-              createMarker(results[i]);
-            }
-          }
-        }
-        function createMarker(place) {
-          var placeLoc = place.geometry.location;
-          var marker = new google.maps.Marker({
-            map: map,
-            position: place.geometry.location
-        })
-          var infowindow = new google.maps.InfoWindow({
-            map:map,
-            })
-
-
-          google.maps.event.addListener(marker, 'click', function(){
-
-            infowindow.setContent(place.name);
-            infowindow.open(map, this);
-          });
-        }
-        </script>tatus) {
           if (status == google.maps.places.PlacesServiceStatus.OK) {
             for (var i = 0; i < results.length; i++) {
               var place = results[i];
@@ -121,24 +76,8 @@
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4&libraries=places&callback=initialize" async defer></script>
         <h3>Community Board </h3>
 
-        {% if messages %}
-            {% for message in messages %}
-            <script>
-                alert('{{ message }}');
-            </script>
-            {% endfor %}
-        {% endif %}
-
-        <a href="/logout">Logout</a><br>
-        <a href="/success">Back</a><br>
-
         {% for post in posts %}
-            <p>
-            <a href="/topic/{{post.id}}"> {{post.title}}</a> Posted by <a href="#">{{post.user.firstname}}</a>
-            {% if post.user.id ==  request.session.user.id %}
-                <a href="/deletepost/{{post.id}}">Delete</a>
-            {% endif %}
-            </p>
+            <a href="/topic/{{post.id}}"> {{post.title}}</a> Posted by <a href="#">{{post.user.firstname}}</a><br>
         {% endfor %}
 
         <form class="" action="/post" method="post">
@@ -147,6 +86,8 @@
             <textarea name="description" rows="8" cols="80" placeholder="description"></textarea><br>
             <input type="submit" name="post" value="Post">
         </form>
+
+
 
     </body>
 </html>
