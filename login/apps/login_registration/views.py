@@ -2,7 +2,6 @@ from django.shortcuts import render, HttpResponse, redirect
 from models import User, Pet, Event, Post, Comment, Qa
 from django.contrib import messages
 from django.urls import reverse
-from geopy.geocoders import Nominatim
 
 # Create your views here.
 
@@ -60,8 +59,7 @@ def registervalidate(request):
 def success(request):
     if not 'user' in request.session:
         return redirect('/')
-    geolocator = Nominatim()
-    location = geolocator.geocode(request.session['user']['zipcode'])
+    # location = geolocator.geocode(request.session['user']['zipcode'])
     print((location.latitude, location.longitude))
     request.session['location']=(location.latitude, location.longitude)
     print request.session['location']
