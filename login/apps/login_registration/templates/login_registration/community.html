@@ -3,10 +3,19 @@
     <head>
         <meta charset="utf-8">
         <title>community</title>
-    </head>
-    <body>
-        <h3>Event Map</h3>
-        <div id="map"></div>
+        <style>
+          /* Always set the map height explicitly to define the size of the div
+           * element that contains the map. */
+          #map {
+            height: 100%;
+          }
+          /* Optional: Makes the sample page fill the window. */
+          html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+          }
+        </style>
         <script>
         var map;
         var service;
@@ -56,26 +65,14 @@
           });
         }
         </script>
+    </head>
+    <body>
+        <h3>Event Map</h3>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4&libraries=places&callback=initialize" async defer></script>
         <h3>Community Board </h3>
 
-        {% if messages %}
-            {% for message in messages %}
-            <script>
-                alert('{{ message }}');
-            </script>
-            {% endfor %}
-        {% endif %}
-
-        <a href="/logout">Logout</a><br>
-        <a href="/success">Back</a><br>
-
         {% for post in posts %}
-            <p>
-            <a href="/topic/{{post.id}}"> {{post.title}}</a> Posted by <a href="#">{{post.user.firstname}}</a>
-            {% if post.user.id ==  request.session.user.id %}
-                <a href="/deletepost/{{post.id}}">Delete</a>
-            {% endif %}
-            </p>
+            <a href="/topic/{{post.id}}"> {{post.title}}</a> Posted by <a href="#">{{post.user.firstname}}</a><br>
         {% endfor %}
 
         <form class="" action="/post" method="post">
@@ -84,6 +81,8 @@
             <textarea name="description" rows="8" cols="80" placeholder="description"></textarea><br>
             <input type="submit" name="post" value="Post">
         </form>
+
+
 
     </body>
 </html>
