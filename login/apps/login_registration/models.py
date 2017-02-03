@@ -109,6 +109,7 @@ class Pet(models.Model):
     biography = models.TextField(null=True)
     breed = models.CharField(max_length=150)
     user = models.ForeignKey(User)
+    image = models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

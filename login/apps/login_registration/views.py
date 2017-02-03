@@ -209,8 +209,10 @@ def deletecomment(request, post_id, comment_id):
 #     *****  the rest of the code :D  *******
 #------------------------------------------------
 def profilepage(request):
+    user = User.objects.filter(id=request.session['user']['id'])[0]
     context = {
-        'user': User.objects.filter(id=request.session['user']['id'])[0]
+        'user': User.objects.filter(id=request.session['user']['id'])[0],
+        'pets':Pet.objects.filter(user=user)
     }
     return render(request, 'login_registration/profile.html', context)
 
@@ -261,16 +263,21 @@ def addpet(request):
     pet_bd = request.POST['pet_birthday']
     pet_name = request.POST['pet_name']
     pet_breed = request.POST['pet_breed']
+    about = request.POST['pet_bio']
+    image = "http://familypetvacaville.com/clients/9658/images/company_images/.resized/.resized_500x500_Labrador%20(yellow)%20image%20courtesy%20of%20Luigi%20Diamanti%20at%20FreeDigitalPhotos.net.jpg"
     valid = True
 
     if len(pet_name) <1:
+        valid = False
+
+    if len(about) < 1:
         valid = False
 
     if len(pet_bd) <1:
         valid = False
 
     if valid:
-        Pet.objects.create(name=pet_name, birthday = pet_bd, breed=pet_breed, user=user)
+        Pet.objects.create(name=pet_name, birthday = pet_bd, breed=pet_breed, user=user, image=image, biography=about)
         return redirect('/profilepage')
     else:
         return redirect('/profilepage')

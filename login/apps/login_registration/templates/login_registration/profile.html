@@ -33,10 +33,10 @@
             <img src="{{user.image}}" class = "circle responsive-img" style="width:80%;height:80%; margin-top:20px">
           </div>
         </div>
-        <div class="col s1 grey large">
-          <p>hi</p>
-          <p>hi</p>
-          <p>hi</p>
+        <div class="col s1 white large" style="overflow:scroll">
+          {% for pet in pets %}
+            <img src="{{pet.image}}" class="circle responsive-img">
+          {% endfor %}
         </div>
         <div class="col s7 grey lighten-4">
           <h1 class="center-align">The Caretaker</h1>
