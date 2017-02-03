@@ -24,7 +24,8 @@ class UserManager(models.Manager):
         password = request.POST['password'].encode()
         pw_hash = bcrypt.hashpw(password, bcrypt.gensalt())
         print pw_hash
-        user = self.create(firstname=request.POST['firstname'], lastname = request.POST['lastname'], email=request.POST['email'], pw_hash=pw_hash, zipcode = request.POST['zipcode'])
+        image = 'http://dogpeopleinc.com/dogpeople_files/dogpeople_logo_web.jpg'
+        user = self.create(firstname=request.POST['firstname'], lastname = request.POST['lastname'], email=request.POST['email'], pw_hash=pw_hash, zipcode = request.POST['zipcode'],image=image)
         print user.pw_hash
         return (True, user)
 
