@@ -25,7 +25,10 @@
         {% for comment in comments %}
             <p>{{comment.user.firstname}} says: {{comment.description}}
             {% if comment.user.id ==  request.session.user.id %}
-                <a href="/deletecomment/{{comment.post.id}}/{{comment.id}}">Delete</a>
+                <form class="" action="/deletecomment/{{comment.post.id}}/{{comment.id}}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" name="delete" value="Delete">
+                </form>
                 </p>
             {% endif %}
         {% endfor %}
