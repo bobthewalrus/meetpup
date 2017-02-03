@@ -182,3 +182,8 @@ def addpet(request):
         return redirect('/profilepage')
     else:
         return redirect('/addpet')
+
+def displayevents(request):
+    events = Event.objects.all()
+    context = {'events': events}
+    return render(request, 'login_registration', context)
