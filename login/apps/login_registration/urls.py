@@ -1,6 +1,5 @@
 from django.conf.urls import url
 from views import index, loginvalidate, registervalidate, success, logout, zipupdate, register, community, adoption, editprofile, updateprofile, profilepage, addpet, eventform, createevent
-
 from . import views
 urlpatterns = [
     url(r'^$', index, name='index'),
