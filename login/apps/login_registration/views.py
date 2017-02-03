@@ -4,8 +4,6 @@ from django.contrib import messages
 from django.urls import reverse
 import googlemaps
 
-# Create your views here.
-
 
 def index(request):
 
@@ -120,24 +118,11 @@ def community(request):
     return render(request, 'login_registration/community.html', context)
 
 def forumtopic(request):
-    # posts = Post.objects.all()
-    # context ={
-    # 'posts':posts
-    # }
-
     return render(request, 'login_registration/forumtopic.html')
 
 def adoption(request):
     return render(request, 'login_registration/adoption.html')
 
-def post(request):
-    if request.method =="POST":
-            user_id = request.session['user']['id']
-            user = User.objects.filter(id=user_id)[0]
-            title = request.POST['title']
-            description = request.POST['description']
-            new_post = Post.objects.create(description=description, user=user, title=title)
-    return redirect('/community')
 
 def topic(request, post_id):
     post = Post.objects.filter(id=post_id)[0]
@@ -148,25 +133,65 @@ def topic(request, post_id):
     }
     return render(request, 'login_registration/forumtopic.html', context)
 
+#------------------------------------------------
+# *** Start a new thread on community page ****
+#------------------------------------------------
+def post(request):
+    if request.method =="POST":
+            user_id = request.session['user']['id']
+            user = User.objects.filter(id=user_id)[0]
+            title = request.POST['title']
+            description = request.POST['description']
+            if not title or not description:
+                messages.add_message(request, messages.INFO, "Please provide title and description")
+                return redirect('/community')
+            new_post = Post.objects.create(description=description, user=user, title=title)
+    return redirect('/community')
+
+#------------------------------------------------
+#   ***** Delete a post on community page *****
+#------------------------------------------------
+def deletepost(request, post_id):
+    post = Post.objects.filter(id=post_id)
+    post.delete()
+    Comment.objects.filter(post = post).delete()
+    return redirect('/community')
+
+#------------------------------------------------
+#      ***** leave a comment for a post *********
+#------------------------------------------------
 def comment(request, post_id):
     if request.method == "POST":
         user_id = request.session['user']['id']
         user = User.objects.filter(id=user_id)[0]
         description = request.POST['description']
+        if not description:
+            messages.add_message(request, messages.INFO, "Comment can not be empty")
+            return redirect('/topic/{}'.format(post_id))
         post = Post.objects.filter(id=post_id)[0]
         post_id= post.id
         new_comment = Comment.objects.create(user=user, post=post, description=description)
     return redirect('/topic/{}'.format(post_id))
 
+#------------------------------------------------
+#      ***** delete comments *********
+#------------------------------------------------
+def deletecomment(request, post_id, comment_id):
+    Comment.objects.filter(id=comment_id).delete()
+    return redirect('/topic/{}'.format(post_id))
+
+#------------------------------------------------
+#     *****  the rest of the code :D  *******
+#------------------------------------------------
 def profilepage(request):
     context = {
-        'user': User.objects.get(id=request.session['user']['id'])
+        'user': User.objects.filter(id=request.session['user']['id'])[0]
     }
     return render(request, 'login_registration/profile.html', context)
 
 def editprofile(request):
     context = {
-        'user': User.objects.get(id=request.session['user']['id'])
+        'user': User.objects.filter(id=request.session['user']['id'])[0]
     }
     return render(request, 'login_registration/edit.html', context)
 
@@ -220,7 +245,7 @@ def addpet(request):
         valid = False
 
     if valid:
-        Pet.objects.create(name=pet_name, birthday = pet_bd, breed=pet_breed)
+        Pet.objects.create(name=pet_name, birthday = pet_bd, breed=pet_breed, user=user)
         return redirect('/profilepage')
     else:
-        return redirect('/addpet')
+        return redirect('/profilepage')

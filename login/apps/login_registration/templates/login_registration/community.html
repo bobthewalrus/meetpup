@@ -58,8 +58,24 @@
         </script>
         <h3>Community Board </h3>
 
+        {% if messages %}
+            {% for message in messages %}
+            <script>
+                alert('{{ message }}');
+            </script>
+            {% endfor %}
+        {% endif %}
+
+        <a href="/logout">Logout</a><br>
+        <a href="/success">Back</a><br>
+
         {% for post in posts %}
-            <a href="/topic/{{post.id}}"> {{post.title}}</a> Posted by <a href="#">{{post.user.firstname}}</a><br>
+            <p>
+            <a href="/topic/{{post.id}}"> {{post.title}}</a> Posted by <a href="#">{{post.user.firstname}}</a>
+            {% if post.user.id ==  request.session.user.id %}
+                <a href="/deletepost/{{post.id}}">Delete</a>
+            {% endif %}
+            </p>
         {% endfor %}
 
         <form class="" action="/post" method="post">
@@ -68,8 +84,6 @@
             <textarea name="description" rows="8" cols="80" placeholder="description"></textarea><br>
             <input type="submit" name="post" value="Post">
         </form>
-
-
 
     </body>
 </html>
