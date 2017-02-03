@@ -109,7 +109,12 @@ def zipupdate(request):
 
 
 def eventform(request):
-    return render(request,'login_registration/eventform.html')
+    user = User.objects.filter(id=request.session['user']['id'])[0]
+    context = {
+        'user':user,
+        'events':Event.objects.all()
+    }
+    return render(request,'login_registration/eventform.html', context)
 
 
 def createevent(request):
@@ -127,9 +132,11 @@ def register(request):
     return render(request, 'login_registration/registration.html')
 
 def community(request):
+    user = User.objects.filter(id=request.session['user']['id'])[0]
     posts = Post.objects.all()
     context ={
-    'posts':posts
+    'posts':posts,
+    'user':user
     }
     return render(request, 'login_registration/community.html', context)
 
@@ -141,11 +148,13 @@ def adoption(request):
 
 
 def topic(request, post_id):
+    user = User.objects.filter(id=request.session['user']['id'])[0]
     post = Post.objects.filter(id=post_id)[0]
     comments = Comment.objects.filter(post = post)
     context={
         'post':post,
         'comments':comments,
+        'user':user
     }
     return render(request, 'login_registration/forumtopic.html', context)
 

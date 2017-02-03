@@ -120,7 +120,7 @@
             <li><input type='password' name='password' id='password' placeholder="Password"></li>
             <li><input type='submit' value='Login' class="waves-effect waves-light btn" style="margin-right:10px; border-radius:10px; width:100%"></li>
           </form>
-          <li><a href="{% url 'register' %}">Signup</a></li>
+          <li><a href="{% url 'register' %}">Sign Up</a></li>
         </ul>
       </div>
     </nav>
@@ -142,7 +142,8 @@
     </form> -->
       <div class="row center-align" style="height:650px">
         <div class="col s5 card large blue-grey" style="overflow:scroll">
-          <a href='{% url 'eventform' %}' class="waves-effect waves-light btn" style="width:96%; margin-bottom:10px;">Create New Event</a>
+          <!-- <a href='{% url 'eventform' %}' class="waves-effect waves-light btn" style="width:96%; margin-bottom:10px;">Create New Event</a> -->
+          <a href='#' class="waves-effect waves-light btn" style="width:96%; margin-bottom:10px;">Sign in to Create an Event</a>
           {% for x in events %}
           <div class="col s12 m12 center-align">
             <!-- <h2 class="header">Horizontal Card</h2> -->
@@ -182,7 +183,7 @@
             {% load staticfiles %}
             <img src={% static 'login_registration/images/meetdong.png' %} class="circle responsive-img" style="width:50%; height:50%">
             <p class="promo-caption">Meet People</p>
-            <p class="light center">Meet new people by creating events and participating in them!</p>
+            <p class="light center">Meet new people by creating events and participating in them! Use maps to find dog parks near you and host a meet up!</p>
           </div>
           <!-- <i class="material-icons">flash_on</i> -->
           <!-- <div class="col s7" style="margin-left:60px"> -->
@@ -221,10 +222,10 @@
         </fieldset>
       </form>
     </div> -->
-    <form action='/logout'>
+    <!-- <form action='/logout'>
       {% csrf_token %}
       <input type='submit' value='Logout'>
-    </form>
+    </form> -->
     <!-- <div class="registration-form-div">
       <form id="registration" action="registervalidate" method="post">
         <fieldset>
