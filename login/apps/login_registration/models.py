@@ -64,7 +64,7 @@ class UserManager(models.Manager):
     def loginvalidation(self,request):
         print '**********validating login******'
         try:
-            users_list = User.objects.filter(email=post['email'])
+            users_list = User.objects.filter(email=request.POST['email'])
             if users_list:
                 user = users_list[0]
             else:
