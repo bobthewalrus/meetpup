@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 import bcrypt, re
+from random import randint
 
 emailregex = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.+_-]+\.[a-zA-Z]+$')
 nameregex = re.compile(r'^[a-zA-Z]+$')
@@ -19,14 +20,13 @@ class EventManager(models.Manager):
 class UserManager(models.Manager):
     def registervalidation(self, request):
         errors = self.validate_inputs(request)
-
         if len(errors) >0:
             return (False, errors)
         password = request.POST['password'].encode()
         pw_hash = bcrypt.hashpw(password, bcrypt.gensalt())
         print pw_hash
-
-        user = self.create(firstname=request.POST['firstname'], lastname = request.POST['lastname'], email=request.POST['email'], pw_hash=pw_hash, zipcode = request.POST['zipcode'])
+        image = 'http://dogpeopleinc.com/dogpeople_files/dogpeople_logo_web.jpg'
+        user = self.create(firstname=request.POST['firstname'], lastname = request.POST['lastname'], email=request.POST['email'], pw_hash=pw_hash, zipcode = request.POST['zipcode'],image=image)
         print user.pw_hash
         return (True, user)
 
@@ -110,6 +110,7 @@ class Pet(models.Model):
     biography = models.TextField(null=True)
     breed = models.CharField(max_length=150)
     user = models.ForeignKey(User)
+    image = models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

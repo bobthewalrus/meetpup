@@ -3446,6 +3446,7 @@ nav ul a span.badge {
   margin-left: auto;
   left: auto;
   right: auto;
+  height:640px;
 }
 
 .row .col.s6 {
@@ -4566,6 +4567,7 @@ small {
 
 .card.large {
   height: 500px;
+  padding:20px;
 }
 
 .card.horizontal {
