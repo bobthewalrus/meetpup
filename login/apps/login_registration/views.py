@@ -21,14 +21,14 @@ def loginvalidate(request):
         # print result
         if result[0] == False:
             print_messages(request, result[1])
-            return redirect(reverse('index'))
+            return redirect(reverse('success'))
         # print request
         print result[1]
         print "Passing to the login function"
         return login(request, result[1])
     else:
         print "Methods not post for loginvalidate"
-        return redirect('/')
+        return redirect('/success')
 
 def login(request, user):
     print "Here at Login"

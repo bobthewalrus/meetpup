@@ -9,7 +9,7 @@
        * element that contains the map. */
       #map {
         height: 100%;
-        width: 80%;
+        width: 100%;
         right: 0;
       }
       /* Optional: Makes the sample page fill the window. */
@@ -98,37 +98,50 @@
       <div class="nav-wrapper">
         <a href="{% url 'success' %}"class="brand-logo left">Meetpups</a>
         <ul id="nav-mobile" class="right">
-          <li><a href="{% url 'profilepage' %}">Back</a></li>
+          <li>Email: </li>
+          <li><input type='text' name='email' id='email'></li>
+          <li>Password: </li>
+          <li><input type='password' name='password' id='password'></label></li>
+          <li><input type='submit' value='Login'></li>
+          <li>Not a User?</li>
+          <li><a href="{% url 'register' %}">Register</a></li>
         </ul>
       </div>
     </nav>
     <!-- <div class="logo">
       <h1>Meetpups</h1>
     </div> -->
-    <form action='/eventform'>
+    <!-- <form action='/eventform'>
       {% csrf_token %}
       <input type='submit' value='Create Event'>
-    </form>
+    </form> -->
     <form action='/logout'>
       {% csrf_token %}
       <input type='submit' value='Logout'>
     </form>
-    <form action='/register'>
+    <!-- <form action='/register'>
       {% csrf_token %}
       <input type='submit' value='Register'>
-    </form>
-    <form action='/community'>
+    </form> -->
+    <!-- <form action='/community'>
       {% csrf_token %}
       <input type='submit' value='Community Page'>
-    </form>
-    <div id="map"></div>
+    </form> -->
+      <div class="row" style="height:800px">
+        <div class="col s5 card large" style="background-color:gray">
+          hi
+          <a href='{% url 'eventform' %}' class="waves-effect waves-light btn" style="width:100%">Create New Event</a>
+
+        </div>
+        <div class="col s7 right" style="height:80%"><div id="map"></div></div>
+      </div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4&libraries=places&callback=initialize" async defer></script>
     <div class="form-div">
-      <form action="login" id="login" method='POST'>
+      <form action="/loginvalidate" id="login" method='POST'>
         <fieldset>
           <legend>Login</legend>
           {% csrf_token %}
-          <label for= 'email'>Email: <input type='text' name='email' id='email'></label>
+          <label for='email'>Email: <input type='text' name='email' id='email'></label>
           <label for='password'>Password: <input type='password' name='password' id='password'></label>
           <input type='submit' value='Login'>
         </fieldset>
@@ -149,6 +162,28 @@
         </fieldset>
       </form>
     </div>
+    <footer class="page-footer">
+            <div class="container">
+              <div class="row">
+                <div class="col l6 s12">
+                  <h5 class="white-text">Like our Page?</h5>
+                  <p class="grey-text text-lighten-4">Spread the love!</p>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Check out the Community!</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="{% url 'community' %}">Forums</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                </ul>
+              </div>
+              </div>
+            </div>
+            <div class="footer-copyright">
+              <div class="container">
+              © Meetpup LLC
+              </div>
+            </div>
+          </footer>
   </body>
   {% load staticfiles %}
   <link rel="stylesheet" href="{% static 'login_registration/css/materialize.css' %}">
