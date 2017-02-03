@@ -2,10 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from models import User, Pet, Event, Post, Comment, Qa
 from django.contrib import messages
 from django.urls import reverse
-from geopy.geocoders import Nominatim
-
-
-# Create your views here.
+# from geopy.geocoders import Nominatim
 
 
 def index(request):
@@ -61,11 +58,11 @@ def registervalidate(request):
 def success(request):
     if not 'user' in request.session:
         return redirect('/')
-    geolocator = Nominatim()
-    location = geolocator.geocode(request.session['user']['zipcode'])
-    print((location.latitude, location.longitude))
-    request.session['location']=(location.latitude, location.longitude)
-    print request.session['location']
+    # geolocator = Nominatim()
+    # location = geolocator.geocode(request.session['user']['zipcode'])
+    # print((location.latitude, location.longitude))
+    # request.session['location']=(location.latitude, location.longitude)
+    # print request.session['location']
     # request.session['zip']='37.386402,-121.925215'
     # print request.session['zip']
     return render(request, 'login_registration/success.html')
@@ -103,20 +100,6 @@ def forumtopic(request):
 def adoption(request):
     return render(request, 'login_registration/adoption.html')
 
-def post(request):
-    if request.method =="POST":
-            user_id = request.session['user']['id']
-            user = User.objects.filter(id=user_id)[0]
-            title = request.POST['title']
-            description = request.POST['description']
-            if not title or not description:
-                messages.add_message(request, messages.INFO, "** Please provide title and description**")
-                return redirect('/community')
-
-            # if not description:
-            #     messages.add_message(request, messages.INFO, "** description can not be empty**")
-            new_post = Post.objects.create(description=description, user=user, title=title)
-    return redirect('/community')
 
 def topic(request, post_id):
     post = Post.objects.filter(id=post_id)[0]
@@ -127,24 +110,56 @@ def topic(request, post_id):
     }
     return render(request, 'login_registration/forumtopic.html', context)
 
+#------------------------------------------------
+# *** Start a new thread on community page ****
+#------------------------------------------------
+def post(request):
+    if request.method =="POST":
+            user_id = request.session['user']['id']
+            user = User.objects.filter(id=user_id)[0]
+            title = request.POST['title']
+            description = request.POST['description']
+            if not title or not description:
+                messages.add_message(request, messages.INFO, "Please provide title and description")
+                return redirect('/community')
+            new_post = Post.objects.create(description=description, user=user, title=title)
+    return redirect('/community')
+
+#------------------------------------------------
+#   ***** Delete a post on community page *****
+#------------------------------------------------
+def deletepost(request, post_id):
+    post = Post.objects.filter(id=post_id)
+    post.delete()
+    Comment.objects.filter(post = post).delete()
+    return redirect('/community')
+
+#------------------------------------------------
+#      ***** leave a comment for a post *********
+#------------------------------------------------
 def comment(request, post_id):
     if request.method == "POST":
         user_id = request.session['user']['id']
         user = User.objects.filter(id=user_id)[0]
         description = request.POST['description']
         if not description:
-            messages.add_message(request, messages.INFO, "** Comment can not be empty**")
+            messages.add_message(request, messages.INFO, "Comment can not be empty")
             return redirect('/topic/{}'.format(post_id))
         post = Post.objects.filter(id=post_id)[0]
         post_id= post.id
         new_comment = Comment.objects.create(user=user, post=post, description=description)
     return redirect('/topic/{}'.format(post_id))
 
-#===========  deleting comments ==================
+#------------------------------------------------
+#      ***** delete comments *********
+#------------------------------------------------
 def deletecomment(request, post_id, comment_id):
     Comment.objects.filter(id=comment_id).delete()
     return redirect('/topic/{}'.format(post_id))
 
+#------------------------------------------------
+#     *****  the rest of the code :D  *******
+#------------------------------------------------
 def profilepage(request):
     context = {
         'user': User.objects.get(id=request.session['user']['id'])

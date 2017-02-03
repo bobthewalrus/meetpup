@@ -9,17 +9,22 @@
 
         {% if messages %}
             {% for message in messages %}
-                <p>{{message}}</p>
+            <script>
+                alert('{{ message }}');
+            </script>
             {% endfor %}
         {% endif %}
 
         <a href="/logout">Logout</a><br>
         <a href="/success">Back</a><br>
 
-
-
         {% for post in posts %}
-            <a href="/topic/{{post.id}}"> {{post.title}}</a> Posted by <a href="#">{{post.user.firstname}}</a><br>
+            <p>
+            <a href="/topic/{{post.id}}"> {{post.title}}</a> Posted by <a href="#">{{post.user.firstname}}</a>
+            {% if post.user.id ==  request.session.user.id %}
+                <a href="/deletepost/{{post.id}}">Delete</a>
+            {% endif %}
+            </p>
         {% endfor %}
 
         <form class="" action="/post" method="post">
