@@ -53,7 +53,18 @@ def registervalidate(request):
     return login(request, result[1])
 
 
+def copy(request):
+    user = User.objects.filter(id=request.session['user']['id'])[0]
+    context = {
+        'user':user,
+        'events':Event.objects.all()
+    }
+    return render(request, 'login_registration/copy.html', context)
+
+
 def success(request):
+    if request.session.has_key('user'):
+        return redirect('/copy')
     # if not 'user' in request.session:
     #     return redirect('/')
     # centeringpoint = request.session['user']['zipcode']

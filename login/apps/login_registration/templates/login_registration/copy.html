@@ -24,7 +24,7 @@
       }
       #map {
         margin-top:5px;
-        height: 123%;
+        height: 100%;
         width: 100%;
         right: 0;
       }
@@ -111,18 +111,12 @@
   </head>
   <body>
     <nav>
-      <div class="nav-wrapper">
-        <a href="{% url 'success' %}"class="brand-logo left">Meetpups</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down" style="width:550px">
-          <form action="/loginvalidate" id="login" method='POST'>
-            {% csrf_token %}
-            <li><input class="none" type='text' name='email' id='email' placeholder="Email" style="margin-right:10px"></li>
-            <li><input type='password' name='password' id='password' placeholder="Password"></li>
-            <li><input type='submit' value='Login' class="waves-effect waves-light btn" style="margin-right:10px; border-radius:10px; width:100%"></li>
-          </form>
-          <li><a href="{% url 'register' %}">Signup</a></li>
-        </ul>
-      </div>
+    <div class="nav-wrapper">
+      <a href="{% url 'success' %}"class="brand-logo left">Meetpups</a>
+      <ul id="nav-mobile" class="right">
+        <li>Welcome {{ user.firstname|title}} {{user.lastname|make_list|first|title}}.</li>
+      </ul>
+    </div>
     </nav>
     <!-- <div class="logo">
       <h1>Meetpups</h1>
@@ -140,7 +134,7 @@
       {% csrf_token %}
       <input type='submit' value='Community Page'>
     </form> -->
-      <div class="row center-align" style="height:650px">
+      <div class="row center-align" style="height:800px">
         <div class="col s5 card large blue-grey" style="overflow:scroll">
           <a href='{% url 'eventform' %}' class="waves-effect waves-light btn" style="width:96%; margin-bottom:10px;">Create New Event</a>
           {% for x in events %}
@@ -171,46 +165,8 @@
         </div>
         <div class="col s7 right" style="height:80%"><div id="map"></div></div>
       </div>
-
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfaj5Z9lfipt5fV4D3CNy6a2I-HLDIZg4&libraries=places&callback=initialize" async defer></script>
-    <div class="row">
-
-      <div class="col s4" style="text:center-align">
-        <!-- Promo Content 1 goes here -->
-        <!-- <div class="row valign-wrapper center-align"> -->
-          <div class="center promo promo-example">
-            {% load staticfiles %}
-            <img src={% static 'login_registration/images/meetdong.png' %} class="circle responsive-img" style="width:50%; height:50%">
-            <p class="promo-caption">Meet People</p>
-            <p class="light center">Meet new people by creating events and participating in them!</p>
-          </div>
-          <!-- <i class="material-icons">flash_on</i> -->
-          <!-- <div class="col s7" style="margin-left:60px"> -->
-          <!-- </div> -->
-        <!-- </div> -->
-
-      </div>
-      <div class="col s4">
-        <!-- Promo Content 2 goes here -->
-        <div class="center promo promo-example">
-          {% load staticfiles %}
-          <img src={% static 'login_registration/images/pong.png' %} class="circle responsive-img" style="width:50%; height:50%">
-          <p class="promo-caption">Online Community</p>
-          <p class="light center">User driven community base allows you to socialize with your fellow pup lovers!</p>
-        </div>
-      </div>
-      <div class="col s4">
-        <!-- Promo Content 3 goes here -->
-        <div class="center promo promo-example">
-          {% load staticfiles %}
-          <img src={% static 'login_registration/images/dongpongadopt.png' %} class="circle responsive-img" style="width:50%; height:50%">
-          <p class="promo-caption">Adopt a Friend</p>
-          <p class="light center">Help out a potential lifetime friend! Save the pups from certain dooooom by taking them into your loving care.</p>
-        </div>
-      </div>
-
-    </div>
-    <!-- <div class="form-div"> -->
+    <div class="form-div">
       <!-- <form action="/loginvalidate" id="login" method='POST'>
         <fieldset>
           <legend>Login</legend>

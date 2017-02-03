@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^comment/(?P<post_id>\d+)$', views.comment),
     url(r'^deletecomment/(?P<post_id>\d+)/(?P<comment_id>\d+)$', views.deletecomment),
     url(r'^deletepost/(?P<post_id>\d+)$', views.deletepost),
+    url(r'^copy$', views.copy)
 ]
