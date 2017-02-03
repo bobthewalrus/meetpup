@@ -66,6 +66,7 @@ class UserManager(models.Manager):
         try:
             users_list = User.objects.filter(email=request.POST['email'])
             if users_list:
+
                 user = users_list[0]
             else:
                 return (False, ["Email or password doesn't exist"])
