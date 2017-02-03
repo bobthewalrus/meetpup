@@ -3416,6 +3416,7 @@ nav ul a span.badge {
   margin-left: auto;
   left: auto;
   right: auto;
+  height: 400px;
 }
 
 .row .col.s2 {
@@ -3437,6 +3438,7 @@ nav ul a span.badge {
   margin-left: auto;
   left: auto;
   right: auto;
+  height:400px;
 }
 
 .row .col.s5 {
@@ -3458,6 +3460,7 @@ nav ul a span.badge {
   margin-left: auto;
   left: auto;
   right: auto;
+  height:400px;
 }
 
 .row .col.s8 {
@@ -4044,6 +4047,7 @@ nav .nav-wrapper {
   position: relative;
   height: 100%;
   margin-left: 20px;
+  padding-right: 20px;
 }
 
 @media only screen and (min-width: 993px) {
